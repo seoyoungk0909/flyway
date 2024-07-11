@@ -1,0 +1,16 @@
+flask
+llama-parse
+langchain
+langchain-community
+langchain-groq
+fastembed
+chromadb
+chainlit
+unstructured
+markdown
+llama-index
+llama-index-embeddings-fastembed
+google-cloud-aiplatform
+langchain-google-vertexai
+
+python-dotenv

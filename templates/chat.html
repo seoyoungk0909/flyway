@@ -1,0 +1,95 @@
+<div>
+  <div class="chat-container">
+    <div class="chat-box" id="chat-box"></div>
+    <div class="chat-input">
+      <input
+        type="text"
+        id="user-input"
+        placeholder="Type your enquiry here..."
+        required
+      />
+      <button type="submit" id="send-button">Send</button>
+    </div>
+  </div>
+</div>
+<script>
+  function isValidUrl(string) {
+    try {
+      new URL(string);
+      return true;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  function sendMessage() {
+    const userInput = document.getElementById("user-input").value;
+    if (!userInput) return;
+    document.getElementById("user-input").value = "";
+
+    const chatBox = document.getElementById("chat-box");
+    const userMessage = document.createElement("div");
+    userMessage.classList.add("message", "user");
+    userMessage.textContent = userInput;
+    chatBox.appendChild(userMessage);
+
+    const loadingMessage = document.createElement("div");
+    loadingMessage.classList.add("message", "loading");
+    loadingMessage.textContent = "Generating response...";
+    chatBox.appendChild(loadingMessage);
+
+    chatBox.scrollTop = chatBox.scrollHeight;
+
+    fetch("/get_response", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ user_input: userInput }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        chatBox.removeChild(loadingMessage);
+        const aiResponse = data.ai_response;
+        if (isValidUrl(aiResponse)) {
+          const aiImage = document.createElement("img");
+          aiImage.src = aiResponse;
+          aiImage.alt = "AI Response Image";
+          aiImage.classList.add("message", "ai");
+          chatBox.appendChild(aiImage);
+        } else {
+          const aiMessage = document.createElement("div");
+          aiMessage.classList.add("message", "ai");
+          aiMessage.textContent = aiResponse;
+          chatBox.appendChild(aiMessage);
+        }
+        chatBox.scrollTop = chatBox.scrollHeight;
+      })
+      .catch((error) => {
+        console.log(error);
+        chatBox.removeChild(loadingMessage);
+        const errorMessage = document.createElement("div");
+        errorMessage.classList.add("message", "ai");
+        errorMessage.textContent =
+          "Error generating response. Please try again.";
+        chatBox.appendChild(errorMessage);
+        chatBox.scrollTop = chatBox.scrollHeight;
+      });
+  }
+
+  document
+    .getElementById("send-button")
+    .addEventListener("click", function (event) {
+      event.preventDefault();
+      sendMessage();
+    });
+
+  document
+    .getElementById("user-input")
+    .addEventListener("keydown", function (event) {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        sendMessage();
+      }
+    });
+</script>
