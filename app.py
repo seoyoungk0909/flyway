@@ -4,11 +4,6 @@ from llm import get_ai_response
 app = Flask(__name__)
 
 
-# @app.before_first_request
-# def initialize():
-#     init()
-
-
 @app.route("/")
 def index():
     # init()

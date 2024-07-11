@@ -1,39 +1,24 @@
 from llama_parse import LlamaParse
 
-from langchain.text_splitter import RecursiveCharacterTextSplitter
-
-# from langchain_community.embeddings.fastembed import FastEmbedEmbeddings
-from llama_index.embeddings.fastembed import FastEmbedEmbedding
-from langchain_core.embeddings import Embeddings
 from chromadb.api.types import EmbeddingFunction, Documents
 from chromadb.utils.embedding_functions import SentenceTransformerEmbeddingFunction
 
-# from langchain_community.embeddings import OpenAIEmbeddings
-# from langchain_community.embeddings import VertexAIEmbeddings
-
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_core.embeddings import Embeddings
 from langchain_community.vectorstores import Chroma
 from langchain_community.document_loaders import DirectoryLoader
 from langchain_community.document_loaders import UnstructuredMarkdownLoader
 from langchain.prompts import PromptTemplate
 from langchain.chains import RetrievalQA
 
-from langchain_google_vertexai import VertexAIEmbeddings
-
-# from fastembed import TextEmbedding
-import chromadb
-
-# from llama_index.embeddings.fastembed import FastEmbedEmbeddings
-
-#
 from langchain_groq import ChatGroq
 
-#
 import joblib
 import os
 import nest_asyncio  # noqa: E402
 import nltk
 
-# nltk.download("averaged_perceptron_tagger")
+nltk.download("averaged_perceptron_tagger")
 
 nest_asyncio.apply()
 
@@ -95,9 +80,7 @@ def load_or_parse_data():
             parsing_instruction=parsingInstruction,
             max_timeout=5000,
         )
-        llama_parse_documents = parser.load_data(
-            "data/travel_guides/South_Korea.pdf"
-        )
+        llama_parse_documents = parser.load_data("data/travel_guides/South_Korea.pdf")
 
         if not llama_parse_documents:
             raise ValueError("Parsing returned an empty result.")
