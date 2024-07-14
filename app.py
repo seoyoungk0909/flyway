@@ -1,22 +1,43 @@
-from flask import Flask, render_template, url_for, request, jsonify
-from llm import get_ai_response
+from flask import Flask, render_template, url_for, request, jsonify, session
+from llm import create_vector_database, get_ai_response
 
 app = Flask(__name__)
+app.secret_key = "1"  # Required for session management
+
+initialise = False
+vs = None
 
 
 @app.route("/")
 def index():
-    # init()
     return render_template("index.html")
 
 
-@app.route("/page1")
-def page1():
-    return render_template("page1.html")
+@app.route("/test")
+def test():
+    return render_template("test.html")
+
+
+@app.route("/result", methods=["POST"])
+def result():
+    data = request.get_json()
+    answers = data.get("answers")
+    session["answers"] = answers
+    return jsonify(redirect=url_for("result_page"))
+
+
+@app.route("/result_page")
+def result_page():
+    answers = session.get("answers", [])
+    return render_template("result.html", answers=answers)
 
 
 @app.route("/chat")
 def chat():
+    global initialise, vs
+    if not initialise:
+        vs = create_vector_database()
+        initialise = True
     return render_template("chat.html")
 
 
@@ -25,8 +46,7 @@ def get_response():
     user_input = request.json.get("user_input")
     # Ensure you have access to the API key here
     # groq_api_key = "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"  # Replace with your actual API key
-    # ai_response = get_ai_response(user_input, groq_api_key)
-    ai_response = get_ai_response(user_input)
+    ai_response = get_ai_response(user_input, vs)
     return jsonify({"user_input": user_input, "ai_response": ai_response})
 
 
