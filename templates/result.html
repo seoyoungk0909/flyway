@@ -1,0 +1,13 @@
+{% extends 'base.html' %} {% block body %}
+<div class="container">
+  <h2>Your Personality Test Result</h2>
+  <ul>
+    {% for index in range(answers|length) %}
+    <li>
+      <strong>Question {{ index + 1 }}:</strong> Option {{ answers[index] }}
+    </li>
+    {% endfor %}
+  </ul>
+  <a href="/chat" class="btn btn-primary">Chat</a>
+</div>
+{% endblock %}

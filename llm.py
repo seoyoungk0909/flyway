@@ -19,7 +19,6 @@ import nest_asyncio  # noqa: E402
 import nltk
 
 nltk.download("averaged_perceptron_tagger")
-
 nest_asyncio.apply()
 
 groq_api_key = "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"
@@ -143,17 +142,18 @@ def create_vector_database():
     )
 
     print("Vector DB created successfully !")
-    return vs, embed_model
+    # return vs, embed_model
+    return vs
 
 
-def get_ai_response(user_input):
+def get_ai_response(user_input, vs):
     # global vs, embed_model, chat_model, vectorstore, retriever, qa
     # def get_response(user_input, groq_api_key):
     groq_api_key = "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"
     # user_input = "Can you recommend me some things to eat at Seoul?"
-
     # Process the data and create vector store
-    vs, embed_model = create_vector_database()
+    # vs, embed_model = create_vector_database()
+    # vs = create_vector_database()
 
     # Instantiate llm
     chat_model = ChatGroq(
@@ -163,13 +163,14 @@ def get_ai_response(user_input):
     )
 
     # Instantiate vectorstore
-    vectorstore = Chroma(
-        embedding_function=embed_model,
-        persist_directory="chroma_db_llamaparse",
-        collection_name="rag",
-    )
-    retriever = vectorstore.as_retriever(search_kwargs={"k": 3})
+    # vectorstore = Chroma(
+    #     embedding_function=embed_model,
+    #     persist_directory="chroma_db_llamaparse",
+    #     collection_name="rag",
+    # )
+    # retriever = vectorstore.as_retriever(search_kwargs={"k": 3})
 
+    retriever = vs.as_retriever(search_kwargs={"k": 3})
     # Create custom prompt template
     custom_prompt_template = """Use the following pieces of information to answer the question.
     If you don't know the answer, just say that you don't know, don't try to make up an answer.

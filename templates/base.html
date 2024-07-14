@@ -21,23 +21,14 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='style/chat.css') }}"
     />
-    {% block body %}{% endblock %}
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <!-- <script
-      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"
-      integrity="sha384-ZzWtA4MvIhyT1Sy3TwJ3FjJFct/Sl0F8ARuoMmCgpM0n5ZC2nKUo8ZtvRpONKjp1"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
-      integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8F6F2PCZx9vONDUl3HZOHeb3s6LlX4yJpZi0sN"
-      crossorigin="anonymous"
-    ></script> -->
+    {% include 'header.html' %}
+
+    <main role="main" class="container">{% block body %}{% endblock %}</main>
+
+    {% include 'footer.html' %}
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   </body>
 </html>
