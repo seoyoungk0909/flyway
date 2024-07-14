@@ -1,0 +1,110 @@
+{% extends 'base.html' %} {% block head %} {% endblock %} {% block body %}
+<div class="container">
+  <div id="questionContainer">
+    <!-- Questions will be inserted here by JavaScript -->
+  </div>
+  <div class="mt-3">
+    <button id="prevBtn" class="btn btn-primary" onclick="prevQuestion()">
+      Previous
+    </button>
+    <button id="nextBtn" class="btn btn-primary" onclick="nextQuestion()">
+      Next
+    </button>
+  </div>
+</div>
+
+<script>
+  let currentQuestion = 0;
+  let answerSelected = false; // Track if an answer has been selected
+  const questions = [
+    { question: "Question 1", options: ["Option 1", "Option 2"] },
+    { question: "Question 2", options: ["Option 1", "Option 2"] },
+    { question: "Question 3", options: ["Option 1", "Option 2"] },
+    { question: "Question 4", options: ["Option 1", "Option 2"] },
+    { question: "Question 5", options: ["Option 1", "Option 2"] },
+  ];
+
+  let answers = new Array(questions.length).fill(null);
+
+  function displayQuestion() {
+    const q = questions[currentQuestion];
+    let optionsHTML = q.options
+      .map((option, index) => {
+        // Check if this option was selected previously
+        let isSelected = answers[currentQuestion] === index;
+        return `<button class="btn" onclick="selectAnswer(${index})" style="background-color: ${
+          isSelected ? "green" : "grey"
+        };">${option}</button>`;
+      })
+      .join("");
+
+    document.getElementById("questionContainer").innerHTML = `
+        <h4>${q.question}</h4>
+        <div>${optionsHTML}</div>
+    `;
+    document.getElementById("prevBtn").style.display =
+      currentQuestion === 0 ? "none" : "inline-block";
+    document.getElementById("nextBtn").innerText =
+      currentQuestion === questions.length - 1 ? "See Result" : "Next";
+    answerSelected = answers[currentQuestion] !== null; // Check if an answer was selected for this question
+  }
+
+  function selectAnswer(optionIndex) {
+    answers[currentQuestion] = optionIndex;
+    answerSelected = true; // Mark as answer selected
+    // Update all buttons to grey, then set the selected button to green
+    const buttons = document.querySelectorAll("#questionContainer .btn");
+    buttons.forEach((btn, index) => {
+      btn.style.backgroundColor = "grey"; // Reset all to grey
+      if (index === optionIndex) {
+        btn.style.backgroundColor = "green"; // Set selected to green
+      }
+    });
+  }
+
+  function submitAnswers() {
+    console.log(answers);
+    fetch("/result", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ answers: answers }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.redirect) {
+          window.location.href = data.redirect;
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }
+
+  function nextQuestion() {
+    if (!answerSelected) {
+      alert("Please select an answer before proceeding.");
+      return;
+    }
+    if (currentQuestion < questions.length - 1) {
+      currentQuestion++;
+      displayQuestion();
+    } else {
+      submitAnswers(); // Call submitAnswers instead of redirecting
+    }
+  }
+
+  function prevQuestion() {
+    if (currentQuestion > 0) {
+      currentQuestion--;
+      displayQuestion();
+    }
+  }
+
+  window.onload = function () {
+    displayQuestion();
+  };
+</script>
+
+{% endblock %}
