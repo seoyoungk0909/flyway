@@ -12,5 +12,3 @@ llama-index
 llama-index-embeddings-fastembed
 google-cloud-aiplatform
 langchain-google-vertexai
-
-python-dotenv

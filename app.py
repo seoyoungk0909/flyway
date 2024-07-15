@@ -1,11 +1,11 @@
 from flask import Flask, render_template, url_for, request, jsonify, session
-from llm import create_vector_database, get_ai_response
+from llm import initialise_llm, get_ai_response
 
 app = Flask(__name__)
 app.secret_key = "1"  # Required for session management
 
-initialise = False
-vs = None
+# initialise = False
+# qa = None
 
 
 @app.route("/")
@@ -34,17 +34,17 @@ def result_page():
 
 @app.route("/chat")
 def chat():
-    global initialise, vs
-    if not initialise:
-        vs = create_vector_database()
-        initialise = True
+    # global initialise, qa
+    # if not initialise:
+    #     qa = initialise_llm()
+    #     initialise = True
     return render_template("chat.html")
 
 
 @app.route("/get_response", methods=["POST"])
 def get_response():
     user_input = request.json.get("user_input")
-    ai_response = get_ai_response(user_input, vs)
+    ai_response = get_ai_response(user_input)
     return jsonify({"user_input": user_input, "ai_response": ai_response})
 
 
