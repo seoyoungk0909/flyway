@@ -21,8 +21,8 @@ import nltk
 nltk.download("averaged_perceptron_tagger")
 nest_asyncio.apply()
 
-groq_api_key = "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"
-llamaparse_api_key = "llx-gAB0liRjFtiqCzOwZ75iXwsuCOsaZYvjPMbuSR4QmyJDhKuC"
+groq_api_key = "groq_api_key"
+llamaparse_api_key = "llamaparse_api_key"
 
 
 class ChromaEmbeddingsAdapter(Embeddings):
