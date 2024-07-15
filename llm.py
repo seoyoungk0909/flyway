@@ -147,28 +147,12 @@ def create_vector_database():
 
 
 def get_ai_response(user_input, vs):
-    # global vs, embed_model, chat_model, vectorstore, retriever, qa
-    # def get_response(user_input, groq_api_key):
-    groq_api_key = "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"
-    # user_input = "Can you recommend me some things to eat at Seoul?"
-    # Process the data and create vector store
-    # vs, embed_model = create_vector_database()
-    # vs = create_vector_database()
-
     # Instantiate llm
     chat_model = ChatGroq(
         temperature=0,
         model_name="mixtral-8x7b-32768",
         api_key=groq_api_key,
     )
-
-    # Instantiate vectorstore
-    # vectorstore = Chroma(
-    #     embedding_function=embed_model,
-    #     persist_directory="chroma_db_llamaparse",
-    #     collection_name="rag",
-    # )
-    # retriever = vectorstore.as_retriever(search_kwargs={"k": 3})
 
     retriever = vs.as_retriever(search_kwargs={"k": 3})
     # Create custom prompt template
