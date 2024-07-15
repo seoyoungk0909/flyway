@@ -44,8 +44,6 @@ def chat():
 @app.route("/get_response", methods=["POST"])
 def get_response():
     user_input = request.json.get("user_input")
-    # Ensure you have access to the API key here
-    # groq_api_key = "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"  # Replace with your actual API key
     ai_response = get_ai_response(user_input, vs)
     return jsonify({"user_input": user_input, "ai_response": ai_response})
 
