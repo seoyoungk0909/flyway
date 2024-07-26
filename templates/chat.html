@@ -3,27 +3,41 @@
 {% endblock %} {% block body %}
 <div>
   <body>
-    <div class="container">
-      <div class="chat-container">
-        <div class="chat-box" id="chat-box"></div>
-        <div class="chat-input input-group">
-          <input
-            type="text"
-            id="user-input"
-            class="form-control"
-            placeholder="Type your enquiry here..."
-            required
-          />
-          <div class="input-group-append">
-            <button type="submit" id="send-button" class="btn btn-primary">
-              Send
-            </button>
+    <div id="splash-screen">
+      <p>Creating your personal assistant chatbot...</p>
+    </div>
+    <div id="chat-content" style="display: none">
+      <div class="container">
+        <div class="chat-container">
+          <div class="chat-box" id="chat-box"></div>
+          <div class="chat-input input-group">
+            <input
+              type="text"
+              id="user-input"
+              class="form-control"
+              placeholder="Type your enquiry here..."
+              required
+            />
+            <div class="input-group-append">
+              <button type="submit" id="send-button" class="btn btn-primary">
+                Send
+              </button>
+            </div>
           </div>
         </div>
       </div>
     </div>
-
     <script>
+      // Splash screen
+      document.addEventListener("DOMContentLoaded", function () {
+        fetch("/initialise_vectorstore")
+          .then((response) => response.json())
+          .then((data) => {
+            document.getElementById("splash-screen").classList.add("hidden");
+            document.getElementById("chat-content").style.display = "block";
+          });
+      });
+
       function isValidUrl(string) {
         try {
           new URL(string);
@@ -81,8 +95,8 @@
             chatBox.removeChild(loadingMessage);
             const errorMessage = document.createElement("div");
             errorMessage.classList.add("chat-bubble", "assistant");
-            errorMessage.textContent =
-              "Error generating response. Please try again.";
+            errorMessage.textContent = error;
+            // "Error generating response. Please try again.";
             chatBox.appendChild(errorMessage);
             chatBox.scrollTop = chatBox.scrollHeight;
           });

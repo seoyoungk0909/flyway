@@ -75,12 +75,19 @@ def load_or_parse_data():
     else:
         parsed_data = None
 
+    pdf_files = []
+    for root, _, files in os.walk("data/travel_guides"):
+        for file in files:
+            if file.endswith(".pdf"):
+                pdf_files.append(os.path.join(root, file))
+
     if parsed_data is None:
         # Perform the parsing step and store the result in llama_parse_documents
+        parsed_data = []
         parsingInstruction = """
-        The provided document is a tour guide of South Korea. This document provides details of what activities a tuorists can do in Seoul.
-        It includes information about the places to visit, things to do, food to eat, and the culture of Seoul.
-        It contains lots of images, maps, and text. Try to be precise while answering the questions.
+        The provided document is a tour guide of cities and countries around the world. These document provides details of what activities a tourists can do.
+        They include information about the places to visit, things to do, food to eat, and the culture of Seoul.
+        They contain lots of images, maps, and text. Try to be precise while answering the questions.
         """
 
         parser = LlamaParse(
@@ -89,26 +96,33 @@ def load_or_parse_data():
             parsing_instruction=parsingInstruction,
             max_timeout=5000,
         )
-        llama_parse_documents = parser.load_data("data/travel_guides/South_Korea.pdf")
+        # llama_parse_documents = parser.load_data("data/travel_guides/South_Korea.pdf")
+        for pdf_file in pdf_files:
+            print(f"Parsing {pdf_file}...")
+            llama_parse_documents = parser.load_data(pdf_file)
+            if not llama_parse_documents:
+                print(f"Parsing returned an empty result for {pdf_file}.")
+                continue
+            parsed_data.append(llama_parse_documents)
 
-        if not llama_parse_documents:
-            raise ValueError("Parsing returned an empty result.")
+        # if not llama_parse_documents:
+        #     raise ValueError("Parsing returned an empty result.")
 
         # Save the parsed data to a file
         print("Saving the parse results in .pkl format ..........")
         try:
-            joblib.dump(llama_parse_documents, data_file)
+            joblib.dump(parsed_data, data_file)
             print("Data saved successfully.")
         except Exception as e:
             print(f"Error saving data: {e}")
 
         # Set the parsed data to the variable
-        parsed_data = llama_parse_documents
+        # parsed_data = llama_parse_documents
 
     return parsed_data
 
 
-def initialise_llm():
+def initialise_vectorstore():
     """
     Initialise llm by loading or creating a vector database and feeding that to llm model as a retriever.
 
@@ -144,8 +158,10 @@ def initialise_llm():
         # print(llama_parse_documents[0].text[:100])
 
         with open("data/output.md", "a") as f:  # Open the file in append mode ('a')
-            for doc in llama_parse_documents:
-                f.write(doc.text + "\n")
+            for pdf in llama_parse_documents:
+                print(f"writing to file...")
+                for doc in pdf:
+                    f.write(doc.text + "\n")
 
         markdown_path = "data/output.md"
         loader = UnstructuredMarkdownLoader(markdown_path)
@@ -170,18 +186,23 @@ def initialise_llm():
 
         print("Vector DB created successfully !")
 
-    # Initialize llm model
+    # Create a retriever from the vector database
+    retriever = vs.as_retriever()
+
+    return retriever
+
+
+# Retrieve response by invoking the QA Chain
+def get_ai_response(user_input, retriever):
+    # Create custom prompt template
     chat_model = ChatGroq(
         temperature=0,
         model_name="mixtral-8x7b-32768",
         api_key=groq_api_key,
     )
 
-    # Create a retriever from the vector database
-    retriever = vs.as_retriever()
-
-    # Create custom prompt template
-    custom_prompt_template = """Use the following pieces of information to answer the question.
+    custom_prompt_template = """
+    Use the following pieces of information to answer the question.
     If you don't know the answer, just say that you don't know, don't try to make up an answer.
 
     Context: {context}
@@ -203,13 +224,6 @@ def initialise_llm():
         return_source_documents=True,
         chain_type_kwargs={"prompt": prompt},
     )
-
-    return qa
-
-
-# Retrieve response by invoking the QA Chain
-def get_ai_response(user_input):
-    qa = initialise_llm()
 
     # Invoke the QA Chain
     response = qa.invoke({"query": user_input})
