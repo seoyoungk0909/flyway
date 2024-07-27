@@ -73,7 +73,7 @@ def load_or_parse_data(llamaparse_api_key):
         parsed_data = None
 
     pdf_files = []
-    for root, _, files in os.walk("data/travel_guides"):
+    for root, _, files in os.walk("static/data/travel_guides"):
         for file in files:
             if file.endswith(".pdf"):
                 pdf_files.append(os.path.join(root, file))
@@ -93,7 +93,7 @@ def load_or_parse_data(llamaparse_api_key):
             parsing_instruction=parsingInstruction,
             max_timeout=5000,
         )
-        # llama_parse_documents = parser.load_data("data/travel_guides/South_Korea.pdf")
+
         for pdf_file in pdf_files:
             print(f"Parsing {pdf_file}...")
             llama_parse_documents = parser.load_data(pdf_file)
@@ -102,9 +102,6 @@ def load_or_parse_data(llamaparse_api_key):
                 continue
             parsed_data.append(llama_parse_documents)
 
-        # if not llama_parse_documents:
-        #     raise ValueError("Parsing returned an empty result.")
-
         # Save the parsed data to a file
         print("Saving the parse results in .pkl format ..........")
         try:
@@ -112,9 +109,6 @@ def load_or_parse_data(llamaparse_api_key):
             print("Data saved successfully.")
         except Exception as e:
             print(f"Error saving data: {e}")
-
-        # Set the parsed data to the variable
-        # parsed_data = llama_parse_documents
 
     return parsed_data
 

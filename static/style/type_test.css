@@ -1,0 +1,20 @@
+.btn {
+  /* Common button styles */
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+  width: 45%;
+  margin-right: 10px;
+}
+
+.btn.selected {
+  background-color: green;
+}
+
+.btn.unselected {
+  background-color: rgb(192, 192, 192);
+}
+
+.individual-question-container {
+  margin: 30px;
+}
