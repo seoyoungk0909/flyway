@@ -5,12 +5,15 @@ from chromadb.utils.embedding_functions import SentenceTransformerEmbeddingFunct
 
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_core.embeddings import Embeddings
-
+from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
+from langchain_core.runnables.history import RunnableWithMessageHistory
+from langchain.chains.combine_documents import create_stuff_documents_chain
+from langchain.chains.history_aware_retriever import create_history_aware_retriever
+from langchain.chains import create_retrieval_chain
 from langchain_community.vectorstores import Chroma
-from langchain_community.document_loaders import DirectoryLoader
 from langchain_community.document_loaders import UnstructuredMarkdownLoader
-from langchain.prompts import PromptTemplate
-from langchain.chains import RetrievalQA
+from langchain_community.chat_message_histories import ChatMessageHistory
+
 from langchain_groq import ChatGroq
 
 import joblib
@@ -187,7 +190,7 @@ def initialise_vectorstore(llamaparse_api_key):
 
 
 # Retrieve response by invoking the QA Chain
-def get_ai_response(user_input, retriever, groq_api_key):
+def get_ai_response(user_input, retriever, groq_api_key, store, session_id):
     # Create custom prompt template
     chat_model = ChatGroq(
         temperature=0,
@@ -195,30 +198,84 @@ def get_ai_response(user_input, retriever, groq_api_key):
         api_key=groq_api_key,
     )
 
-    custom_prompt_template = """
-    Use the following pieces of information to answer the question.
-    If you don't know the answer, just say that you don't know, don't try to make up an answer.
-
-    Context: {context}
-    Question: {question}
-
-    Only return the helpful answer below and nothing else.
-    Helpful answer:
-    """
-
-    prompt = PromptTemplate(
-        template=custom_prompt_template, input_variables=["context", "question"]
+    # Retrieval chain with history
+    contextualize_q_system_prompt = (
+        "Given a chat history and the latest user question "
+        "which might reference context in the chat history, "
+        "formulate a standalone question which can be understood "
+        "without the chat history. Do NOT answer the question, "
+        "just reformulate it if needed and otherwise return it as is."
     )
 
-    # Instantiate retrieval question answering chain
-    qa = RetrievalQA.from_chain_type(
-        llm=chat_model,
-        chain_type="stuff",
-        retriever=retriever,
-        return_source_documents=True,
-        chain_type_kwargs={"prompt": prompt},
+    contextualize_q_prompt = ChatPromptTemplate.from_messages(
+        [
+            ("system", contextualize_q_system_prompt),
+            MessagesPlaceholder("chat_history"),
+            ("human", "{input}"),
+        ]
     )
 
-    # Invoke the QA Chain
-    response = qa.invoke({"query": user_input})
-    return response["result"]
+    history_aware_retriever = create_history_aware_retriever(
+        chat_model, retriever, contextualize_q_prompt
+    )
+
+    # Custom prompt for question answering chain
+    qa_prompt = ChatPromptTemplate.from_messages(
+        [
+            (
+                "system",
+                """
+        Use the following pieces of information to answer the question.
+        If you don't know the answer, just say that you don't know, don't try to make up an answer.
+
+        Context: {context}
+
+        Only return the helpful answer below and nothing else.
+        """,
+            ),
+            MessagesPlaceholder(variable_name="chat_history"),
+            ("user", "{input}"),
+        ]
+    )
+    question_answer_chain = create_stuff_documents_chain(chat_model, qa_prompt)
+
+    # Combine QA chain and retrieval chain into rag_chain
+    rag_chain = create_retrieval_chain(history_aware_retriever, question_answer_chain)
+
+    # Helper function to retrieve session history
+    def get_session_history(session_id):
+        if session_id not in store:
+            store[session_id] = ChatMessageHistory()
+        return store[session_id]
+
+    conversational_rag_chain = RunnableWithMessageHistory(
+        rag_chain,
+        get_session_history,
+        input_messages_key="input",
+        history_messages_key="chat_history",
+        output_messages_key="answer",
+    )
+
+    response = conversational_rag_chain.invoke(
+        {"input": user_input},
+        config={"configurable": {"session_id": session_id}},
+    )["answer"]
+
+    return response
+
+
+# ______________________ For debugging LLM ______________________
+# from dotenv import load_dotenv
+# load_dotenv()
+# groq_api_key = os.getenv("GROQ_API_KEY")
+# llamaparse_api_key = os.getenv("LLAMAPARSE_API_KEY")
+# if __name__ == "__main__":
+#     store = {}
+#     retriever = initialise_vectorstore(llamaparse_api_key)
+
+#     while True:
+#         user_input = input("You: ")
+#         if user_input.lower() == "exit":
+#             break
+#         response = get_ai_response(user_input, retriever, groq_api_key, store)
+#         print("Assistant:", response)
