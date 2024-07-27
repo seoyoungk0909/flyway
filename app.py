@@ -17,7 +17,6 @@ retriever = None
 retriever_lock = threading.Lock()
 
 chat_history_store = {}
-chat_history_store_lock = threading.Lock()
 
 
 @app.route("/")
@@ -78,10 +77,4 @@ def get_response():
 
 
 if __name__ == "__main__":
-    try:
-        app.run(debug=True, port=5002)
-    except Exception as e:
-        print(f"Error occurred: {e}")
-    finally:
-        # Perform any final cleanup here
-        print("Application has stopped.")
+    app.run(debug=True, port=5002)

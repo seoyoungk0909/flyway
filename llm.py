@@ -73,7 +73,7 @@ def load_or_parse_data(llamaparse_api_key):
         parsed_data = None
 
     pdf_files = []
-    for root, _, files in os.walk("data/travel_guides"):
+    for root, _, files in os.walk("static/data/travel_guides"):
         for file in files:
             if file.endswith(".pdf"):
                 pdf_files.append(os.path.join(root, file))
@@ -93,7 +93,7 @@ def load_or_parse_data(llamaparse_api_key):
             parsing_instruction=parsingInstruction,
             max_timeout=5000,
         )
-        # llama_parse_documents = parser.load_data("data/travel_guides/South_Korea.pdf")
+
         for pdf_file in pdf_files:
             print(f"Parsing {pdf_file}...")
             llama_parse_documents = parser.load_data(pdf_file)
@@ -102,9 +102,6 @@ def load_or_parse_data(llamaparse_api_key):
                 continue
             parsed_data.append(llama_parse_documents)
 
-        # if not llama_parse_documents:
-        #     raise ValueError("Parsing returned an empty result.")
-
         # Save the parsed data to a file
         print("Saving the parse results in .pkl format ..........")
         try:
@@ -112,9 +109,6 @@ def load_or_parse_data(llamaparse_api_key):
             print("Data saved successfully.")
         except Exception as e:
             print(f"Error saving data: {e}")
-
-        # Set the parsed data to the variable
-        # parsed_data = llama_parse_documents
 
     return parsed_data
 
@@ -191,77 +185,85 @@ def initialise_vectorstore(llamaparse_api_key):
 
 # Retrieve response by invoking the QA Chain
 def get_ai_response(user_input, retriever, groq_api_key, store, session_id):
-    # Create custom prompt template
-    chat_model = ChatGroq(
-        temperature=0,
-        model_name="mixtral-8x7b-32768",
-        api_key=groq_api_key,
-    )
+    try:
+        retriever = None
+        # Create custom prompt template
+        chat_model = ChatGroq(
+            temperature=0,
+            model_name="mixtral-8x7b-32768",
+            api_key=groq_api_key,
+        )
 
-    # Retrieval chain with history
-    contextualize_q_system_prompt = (
-        "Given a chat history and the latest user question "
-        "which might reference context in the chat history, "
-        "formulate a standalone question which can be understood "
-        "without the chat history. Do NOT answer the question, "
-        "just reformulate it if needed and otherwise return it as is."
-    )
+        # Retrieval chain with history
+        contextualize_q_system_prompt = (
+            "Given a chat history and the latest user question "
+            "which might reference context in the chat history, "
+            "formulate a standalone question which can be understood "
+            "without the chat history. Do NOT answer the question, "
+            "just reformulate it if needed and otherwise return it as is."
+        )
 
-    contextualize_q_prompt = ChatPromptTemplate.from_messages(
-        [
-            ("system", contextualize_q_system_prompt),
-            MessagesPlaceholder("chat_history"),
-            ("human", "{input}"),
-        ]
-    )
+        contextualize_q_prompt = ChatPromptTemplate.from_messages(
+            [
+                ("system", contextualize_q_system_prompt),
+                MessagesPlaceholder("chat_history"),
+                ("human", "{input}"),
+            ]
+        )
 
-    history_aware_retriever = create_history_aware_retriever(
-        chat_model, retriever, contextualize_q_prompt
-    )
+        history_aware_retriever = create_history_aware_retriever(
+            chat_model, retriever, contextualize_q_prompt
+        )
 
-    # Custom prompt for question answering chain
-    qa_prompt = ChatPromptTemplate.from_messages(
-        [
-            (
-                "system",
-                """
-        Use the following pieces of information to answer the question.
-        If you don't know the answer, just say that you don't know, don't try to make up an answer.
+        # Custom prompt for question answering chain
+        qa_prompt = ChatPromptTemplate.from_messages(
+            [
+                (
+                    "system",
+                    """
+            Use the following pieces of information to answer the question.
+            If you don't know the answer, just say that you don't know, don't try to make up an answer.
 
-        Context: {context}
+            Context: {context}
 
-        Only return the helpful answer below and nothing else.
-        """,
-            ),
-            MessagesPlaceholder(variable_name="chat_history"),
-            ("user", "{input}"),
-        ]
-    )
-    question_answer_chain = create_stuff_documents_chain(chat_model, qa_prompt)
+            Only return the helpful answer below and nothing else.
+            """,
+                ),
+                MessagesPlaceholder(variable_name="chat_history"),
+                ("user", "{input}"),
+            ]
+        )
+        question_answer_chain = create_stuff_documents_chain(chat_model, qa_prompt)
 
-    # Combine QA chain and retrieval chain into rag_chain
-    rag_chain = create_retrieval_chain(history_aware_retriever, question_answer_chain)
+        # Combine QA chain and retrieval chain into rag_chain
+        rag_chain = create_retrieval_chain(
+            history_aware_retriever, question_answer_chain
+        )
 
-    # Helper function to retrieve session history
-    def get_session_history(session_id):
-        if session_id not in store:
-            store[session_id] = ChatMessageHistory()
-        return store[session_id]
+        # Helper function to retrieve session history
+        def get_session_history(session_id):
+            if session_id not in store:
+                store[session_id] = ChatMessageHistory()
+            return store[session_id]
 
-    conversational_rag_chain = RunnableWithMessageHistory(
-        rag_chain,
-        get_session_history,
-        input_messages_key="input",
-        history_messages_key="chat_history",
-        output_messages_key="answer",
-    )
+        conversational_rag_chain = RunnableWithMessageHistory(
+            rag_chain,
+            get_session_history,
+            input_messages_key="input",
+            history_messages_key="chat_history",
+            output_messages_key="answer",
+        )
 
-    response = conversational_rag_chain.invoke(
-        {"input": user_input},
-        config={"configurable": {"session_id": session_id}},
-    )["answer"]
+        response = conversational_rag_chain.invoke(
+            {"input": user_input},
+            config={"configurable": {"session_id": session_id}},
+        )["answer"]
 
-    return response
+        return response
+
+    except Exception as e:
+        print(f"Error generating response: {e}")
+        return "Error generating response."
 
 
 # ______________________ For debugging LLM ______________________
