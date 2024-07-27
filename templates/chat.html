@@ -30,7 +30,7 @@
     <script>
       // Splash screen
       document.addEventListener("DOMContentLoaded", function () {
-        fetch("/initialise_vectorstore")
+        fetch("/initialise_llm")
           .then((response) => response.json())
           .then((data) => {
             document.getElementById("splash-screen").classList.add("hidden");

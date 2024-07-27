@@ -18,12 +18,6 @@ import os
 import nest_asyncio  # noqa: E402
 import nltk
 
-# Hide API Key
-from dotenv import load_dotenv
-
-load_dotenv()
-groq_api_key = os.getenv("GROQ_API_KEY")
-llamaparse_api_key = os.getenv("LLAMAPARSE_API_KEY")
 
 # Hide warning message
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
@@ -53,7 +47,7 @@ class LangChainEmbeddingAdapter(EmbeddingFunction[Documents]):
         return self.ef.embed_documents(input)
 
 
-def load_or_parse_data():
+def load_or_parse_data(llamaparse_api_key):
     """
     This function loads the parsed data from a file if it exists, otherwise it performs the parsing step and stores the result in a file.
     It utilises llamaparse to parse data from a pdf file.
@@ -122,7 +116,7 @@ def load_or_parse_data():
     return parsed_data
 
 
-def initialise_vectorstore():
+def initialise_vectorstore(llamaparse_api_key):
     """
     Initialise llm by loading or creating a vector database and feeding that to llm model as a retriever.
 
@@ -154,7 +148,7 @@ def initialise_vectorstore():
     else:
         print("Creating new vector database.")
         # Call the function to either load or parse the data
-        llama_parse_documents = load_or_parse_data()
+        llama_parse_documents = load_or_parse_data(llamaparse_api_key)
         # print(llama_parse_documents[0].text[:100])
 
         with open("data/output.md", "a") as f:  # Open the file in append mode ('a')
@@ -193,7 +187,7 @@ def initialise_vectorstore():
 
 
 # Retrieve response by invoking the QA Chain
-def get_ai_response(user_input, retriever):
+def get_ai_response(user_input, retriever, groq_api_key):
     # Create custom prompt template
     chat_model = ChatGroq(
         temperature=0,
