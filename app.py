@@ -24,12 +24,12 @@ def index():
     # Initialise session id by assigning random key
     if "id" not in session:
         session["id"] = secrets.token_hex()
-    return render_template("index.html")
+    return render_template("starting.html")
 
 
-@app.route("/test")
+@app.route("/type_test")
 def test():
-    return render_template("test.html")
+    return render_template("type_test.html")
 
 
 @app.route("/result", methods=["POST"])
@@ -37,13 +37,15 @@ def result():
     data = request.get_json()
     answers = data.get("answers")
     session["answers"] = answers
+    calculations = data.get("calculations")
+    session["calculations"] = calculations
     return jsonify(redirect=url_for("result_page"))
 
 
 @app.route("/result_page")
 def result_page():
-    answers = session.get("answers", [])
-    return render_template("result.html", answers=answers)
+    calculations = session.get("calculations", [])
+    return render_template("result.html", calculations=calculations)
 
 
 @app.route("/initialise_llm")

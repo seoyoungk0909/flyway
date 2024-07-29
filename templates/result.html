@@ -1,13 +1,60 @@
 {% extends 'base.html' %} {% block body %}
 <div class="container">
   <h2>Your Personality Test Result</h2>
-  <ul>
-    {% for index in range(answers|length) %}
-    <li>
-      <strong>Question {{ index + 1 }}:</strong> Option {{ answers[index] }}
-    </li>
-    {% endfor %}
-  </ul>
+  <h3 id="personality-type">Your type is:</h3>
+  <p id="percentages-list"> Percentage list:</p>
   <a href="/chat" class="btn btn-primary">Chat</a>
 </div>
+<script>
+  var calculations = JSON.parse('{{ calculations | tojson | safe}}');
+  let personalityString = '';
+
+  // Calculate percentage
+  // TODO: Improve cal
+  document.addEventListener("DOMContentLoaded", function () {
+      personalityString =
+          (calculations.energetic >= calculations.relaxed ? "E" : "R") +
+          (calculations.planned >= calculations.spontaneous ? "P" : "O") +
+          (calculations.urbanite >= calculations.naturalist ? "U" : "N") +
+          (calculations.saver >= calculations.spender ? "A" : "S");
+
+      const percentages = {
+          E: (calculations.energetic / (calculations.energetic + calculations.relaxed)) * 100 || 0,
+          R: (calculations.relaxed / (calculations.energetic + calculations.relaxed)) * 100 || 0,
+          P: (calculations.planned / (calculations.planned + calculations.spontaneous)) * 100 || 0,
+          O: (calculations.spontaneous / (calculations.planned + calculations.spontaneous)) * 100 || 0,
+          U: (calculations.urbanite / (calculations.urbanite + calculations.naturalist)) * 100 || 0,
+          N: (calculations.naturalist / (calculations.urbanite + calculations.naturalist)) * 100 || 0,
+          A: (calculations.saver / (calculations.saver + calculations.spender)) * 100 || 0,
+          S: (calculations.spender / (calculations.saver + calculations.spender)) * 100 || 0,
+      };
+
+      const relevantPercentages = {};
+      for (const type of personalityString) {
+          relevantPercentages[type] = percentages[type];
+      }
+      document.getElementById("personality-type").innerText = `Your type is: ${personalityString}`;
+
+      const percentagesList = document.getElementById("percentages-list");
+      let percentagesHTML = '';
+      for (const [type, percentage] of Object.entries(relevantPercentages)) {
+          const typeName = {
+              E: "Energetic",
+              R: "Relaxed",
+              P: "Planned",
+              O: "Spontaneous",
+              U: "Urbanite",
+              N: "Naturalist",
+              A: "Saver",
+              S: "Spender"
+          }[type];
+          percentagesHTML += `<li>${typeName} (${type}): ${percentage.toFixed(0)}%</li>`;
+      }
+      percentagesList.innerHTML = percentagesHTML;
+  });
+
+  // TODO: Show decription of corresponding type
+</script>
+</body>
+
 {% endblock %}

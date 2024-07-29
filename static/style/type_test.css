@@ -1,5 +1,10 @@
 .btn {
-  /* Common button styles */
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+}
+
+.options-btn {
   padding: 10px;
   border: none;
   cursor: pointer;
@@ -7,11 +12,11 @@
   margin-right: 10px;
 }
 
-.btn.selected {
+.options-btn.selected {
   background-color: green;
 }
 
-.btn.unselected {
+.options-btn.unselected {
   background-color: rgb(192, 192, 192);
 }
 

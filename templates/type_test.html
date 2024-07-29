@@ -1,4 +1,4 @@
-{% extends 'base.html' %} {% block head %} {% endblock %} {% block body %}
+{% extends 'base.html' %} {% block body %}
 <body>
   <link
     rel="stylesheet"
@@ -32,6 +32,17 @@
     let currentStart = 0;
     const questionsPerPage = 4;
     let questions = [];
+    let answers = new Array(questions.length).fill(null);
+    let calculations = {
+      energetic: 0,
+      relaxed: 0,
+      planned: 0,
+      spontaneous: 0,
+      urbanite: 0,
+      naturalist: 0,
+      saver: 0,
+      spender: 0,
+    };
 
     // Fetch questions from questions.json
     document.addEventListener("DOMContentLoaded", function () {
@@ -46,7 +57,7 @@
         })
         .then((data) => {
           questions = transformData(data);
-          console.log(questions);
+          // console.log(questions);
           displayQuestion();
         })
         .catch((error) => console.error("Error fetching JSON data:", error));
@@ -59,16 +70,20 @@
         if (data.hasOwnProperty(key)) {
           const question = data[key];
           const options = [question.option_1.answer, question.option_2.answer];
+          const calculations = [
+            question.option_1.calculation,
+            question.option_2.calculation,
+          ];
           questionsArray.push({
             question: question.question,
             options: options,
+            calculations: calculations,
           });
         }
       }
+      // console.log(questionsArray);
       return questionsArray;
     }
-
-    let answers = new Array(questions.length).fill(null);
 
     function displayQuestion() {
       const start =
@@ -81,18 +96,18 @@
         let optionsHTML = q.options
           .map((option, index) => {
             let isSelected = answers[i] === index;
-            return `<button class="btn ${
+            return `<button class="options-btn ${
               isSelected ? "selected" : "unselected"
             }" onclick="selectAnswer(${i}, ${index})">${option}</button>`;
           })
           .join("");
 
         questionsHTML += `
-          <div class="individual-question-container">
-            <h4>${q.question}</h4>
-            <div>${optionsHTML}</div>
-          </div>
-        `;
+            <div class="individual-question-container">
+              <h4>${q.question}</h4>
+              <div>${optionsHTML}</div>
+            </div>
+          `;
       }
 
       document.getElementById("questionContainer").innerHTML = questionsHTML;
@@ -107,14 +122,36 @@
       displayQuestion(); // Re-render the questions to update button styles
     }
 
+    function calculatePoints() {
+      // Reset calculations
+      for (let key in calculations) {
+        calculations[key] = 0;
+      }
+
+      answers.forEach((optionIndex, questionIndex) => {
+        if (optionIndex !== null) {
+          const selectedOptionCalculations =
+            questions[questionIndex].calculations[optionIndex];
+          for (const key in selectedOptionCalculations) {
+            if (selectedOptionCalculations.hasOwnProperty(key)) {
+              const calc = selectedOptionCalculations[key];
+              calculations[calc.type] += calc.point;
+            }
+          }
+        }
+      });
+    }
+
     function submitAnswers() {
-      console.log(answers);
+      calculatePoints();
+      // console.log(answers);
+      // console.log(calculations);
       fetch("/result", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ answers: answers }),
+        body: JSON.stringify({ answers: answers, calculations: calculations }),
       })
         .then((response) => response.json())
         .then((data) => {
