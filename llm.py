@@ -267,17 +267,17 @@ def get_ai_response(user_input, retriever, groq_api_key, store, session_id):
 
 
 # ______________________ For debugging LLM ______________________
-# from dotenv import load_dotenv
-# load_dotenv()
-# groq_api_key = os.getenv("GROQ_API_KEY")
-# llamaparse_api_key = os.getenv("LLAMAPARSE_API_KEY")
-# if __name__ == "__main__":
-#     store = {}
-#     retriever = initialise_vectorstore(llamaparse_api_key)
+from dotenv import load_dotenv
+load_dotenv()
+groq_api_key = os.getenv("GROQ_API_KEY")
+llamaparse_api_key = os.getenv("LLAMAPARSE_API_KEY")
+if __name__ == "__main__":
+    store = {}
+    retriever = initialise_vectorstore(llamaparse_api_key)
 
-#     while True:
-#         user_input = input("You: ")
-#         if user_input.lower() == "exit":
-#             break
-#         response = get_ai_response(user_input, retriever, groq_api_key, store)
-#         print("Assistant:", response)
+    while True:
+        user_input = input("You: ")
+        if user_input.lower() == "exit":
+            break
+        response = get_ai_response(user_input, retriever, groq_api_key, store)
+        print("Assistant:", response)
