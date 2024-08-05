@@ -21,11 +21,12 @@ import os
 import nest_asyncio  # noqa: E402
 import nltk
 
+from dotenv import load_dotenv
 
 # Hide warning message
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
-nltk.download("averaged_perceptron_tagger")
-nest_asyncio.apply()
+# nltk.download("averaged_perceptron_tagger")
+# nest_asyncio.apply()
 
 
 # Convert the parsed data into a format that can be used by the vectorstore
@@ -184,9 +185,15 @@ def initialise_vectorstore(llamaparse_api_key):
 
 
 # Retrieve response by invoking the QA Chain
-def get_ai_response(user_input, retriever, groq_api_key, store, session_id):
+def get_ai_response(
+    user_input, retriever, groq_api_key, store, session_id, type, description
+):
+    if retriever == None:
+        load_dotenv()
+        llamaparse_api_key = os.getenv("LLAMAPARSE_API_KEY")
+        retriever = initialise_vectorstore(llamaparse_api_key)
+        # return "Your chatbot is not initialized yet. Please refresh the page and wait for a few seconds."
     try:
-        retriever = None
         # Create custom prompt template
         chat_model = ChatGroq(
             temperature=0,
@@ -233,6 +240,15 @@ def get_ai_response(user_input, retriever, groq_api_key, store, session_id):
                 ("user", "{input}"),
             ]
         )
+
+        # TODO: add travel type and description to prompt above.
+        # eg) This user has a travel type of {type} which means the user is {description}.
+
+        # qa_prompt = qa_prompt.format(
+        #     type=type,
+        #     description=description,
+        # )
+
         question_answer_chain = create_stuff_documents_chain(chat_model, qa_prompt)
 
         # Combine QA chain and retrieval chain into rag_chain
@@ -268,16 +284,23 @@ def get_ai_response(user_input, retriever, groq_api_key, store, session_id):
 
 # ______________________ For debugging LLM ______________________
 # from dotenv import load_dotenv
+
 # load_dotenv()
 # groq_api_key = os.getenv("GROQ_API_KEY")
 # llamaparse_api_key = os.getenv("LLAMAPARSE_API_KEY")
+
 # if __name__ == "__main__":
 #     store = {}
 #     retriever = initialise_vectorstore(llamaparse_api_key)
+#     session_id = "1"
+#     type = "enthusiast"
+#     description = "enthusiast"
 
 #     while True:
 #         user_input = input("You: ")
 #         if user_input.lower() == "exit":
 #             break
-#         response = get_ai_response(user_input, retriever, groq_api_key, store)
+#         response = get_ai_response(
+#             user_input, retriever, groq_api_key, store, session_id, type, description
+#         )
 #         print("Assistant:", response)

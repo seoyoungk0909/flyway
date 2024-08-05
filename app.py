@@ -72,8 +72,9 @@ def get_response():
     if session.get("retriever_initialized") is None:
         return jsonify({"error": "LLM not initialized"}), 500
     session_id = session.get("id", "")
+    # TODO: PASS travel type and description
     ai_response = get_ai_response(
-        user_input, retriever, groq_api_key, chat_history_store, session_id
+        user_input, retriever, groq_api_key, chat_history_store, session_id, "", ""
     )
     return jsonify({"user_input": user_input, "ai_response": ai_response})
 
