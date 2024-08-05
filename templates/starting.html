@@ -1,7 +1,165 @@
-{% extends 'base.html' %} {% block body %}
-<div class="container text-center mt-5">
-  <h1>Travel Type Test</h1>
-  <p>Welcome to the travel type test. Click the button below to start.</p>
-  <a href="/type_test" class="btn btn-primary">Start</a>
+{% extends 'base.html' %}
+
+{% block head %}
+<style>
+  body {
+    background-color: rgb(157, 64, 183);
+    color: white;
+    font-family: sans-serif;
+  }
+
+  .container_body {
+    display: table;
+    margin: 30% auto;
+  }
+
+  .container_body2 {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+  }
+
+
+  .circular-image {
+    width: 400px;
+    height: 400px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: linear-gradient(to bottom, rgba(157, 64, 183, 0.596), rgba(203, 247, 176, 0.786));
+    animation: fadeIn 2s ease-in-out;
+    position: absolute;
+    z-index: -1;
+    margin-left: 130px;
+    margin-top: -320px;
+  }
+
+  h1 {
+    font-size: 7rem;
+    font-weight: 300;
+    letter-spacing: -0.07em;
+    animation-delay: 0.5s;
+    animation: riseUp 0.9s ease-out forwards;
+  }
+
+  p {
+    font-size: 1.3rem;
+    font-weight: 100;
+    animation-delay: 0.8s;
+    margin-bottom: -0.4rem;
+    animation: riseUp 0.6s ease-out forwards;
+  }
+
+  .start-button {
+    margin-top: 4rem;
+    border-radius: 30px;
+    padding: 0.6rem 2.5rem;
+    background-color: rgb(255, 255, 255);
+    font-weight: bold;
+    font-size: 0.7rem;
+  }
+
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+
+    100% {
+      opacity: 1;
+    }
+  }
+
+  @keyframes riseUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="container_body">
+  <div class="container_body2">
+    <h1>Travel Type Test</h1>
+    <p>WELCOME TO THE TRAVEL TYPE TEST</p>
+    <p>CLICK THE BUTTON BELOW TO GET STARTED!</p>
+    <a href="/type_test" class="btn start-button">Start</a>
+    <div class=" circular-image"></div>
+  </div>
 </div>
 {% endblock %}
+
+
+<!-- <img src="{{ url_for('static', filename='images/startingdesign1.png') }}"> -->
+
+<!-- 
+<style>
+  body {
+    background-color: rgb(157, 64, 183);
+    color: white;
+    font-family: sans-serif;
+  }
+
+  .circular-image {
+    width: 400px;
+    height: 400px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: linear-gradient(to bottom, rgba(157, 64, 183, 0.596), rgba(203, 247, 176, 0.786));
+    position: relative;
+    top: 50px;
+    left: 130px;
+    z-index: -1;
+  }
+
+  p {
+    font-size: 1.3rem;
+    margin-bottom: -0.4rem;
+    font-weight: 100;
+  }
+
+  h1 {
+
+    font-size: 5rem;
+    margin-top: -16rem;
+    margin-bottom: 1rem;
+    font-weight: 300;
+    letter-spacing: -0.07em
+  }
+
+  .start-button {
+    border-radius: 30px;
+    padding: 0.6rem 2.5rem;
+    background-color: rgb(255, 255, 255);
+    margin-top: 3rem;
+    margin-bottom: 7rem;
+    font-weight: bold;
+    font-size: 0.7rem;
+  }
+</style>
+    -->
+
+
+
+
+
+absolute value
+circular image{
+absolute
+top: 80px;
+left: 240px;
+
+}
+h1 {
+
+font-size: 5rem;
+margin-top: 7rem;
+margin-bottom: 1rem;
+font-weight: 300;
+letter-spacing: -0.07em
+}
