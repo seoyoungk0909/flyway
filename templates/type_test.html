@@ -43,6 +43,8 @@
       saver: 0,
       spender: 0,
     };
+    let percentage = [];
+    let travel_type = "";
 
     // Fetch questions from questions.json
     document.addEventListener("DOMContentLoaded", function () {
@@ -142,16 +144,70 @@
       });
     }
 
+    // Helper function to calculate percentage of target value between two values
+    function calculatePercentage(target, other) {
+      return (target / (target + other)) * 100;
+    }
+
+    function calculatePercentageAndType() {
+      // TODO: Better error handling (when both percentage is 0)
+      let letterMapping = {
+        energetic: "E",
+        relaxed: "R",
+        planned: "P",
+        spontaneous: "O",
+        urbanite: "U",
+        naturalist: "N",
+        saver: "A",
+        spender: "S",
+      };
+
+      let keys = Object.keys(calculations);
+
+      for (let i = 0; i < keys.length; i += 2) {
+        let percent1 = null;
+        let percent2 = null;
+        let type = "";
+        let letter = "";
+
+        // calculate percentage for first type, round to integer
+        percent1 = Math.round(
+          (calculations[keys[i]] /
+            (calculations[keys[i]] + calculations[keys[i + 1]])) *
+            100
+        );
+
+        // calculate percent for the corresponding type
+        if (percent1 != null) {
+          percent2 = 100 - percent1;
+        }
+
+        // determine which type is greater
+        type = percent1 > percent2 ? keys[i] : keys[i + 1];
+
+        // determine the letter for the type
+        letter = letterMapping[type] || "";
+        travel_type += letter;
+
+        percentage.push([keys[i], percent1], [keys[i + 1], percent2]);
+      }
+      // console.log("travel_type: ", travel_type);
+      // console.log("percentage: ", percentage);
+    }
+
     function submitAnswers() {
       calculatePoints();
-      // console.log(answers);
-      // console.log(calculations);
+      calculatePercentageAndType();
       fetch("/result", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ answers: answers, calculations: calculations }),
+        body: JSON.stringify({
+          answers: answers,
+          travel_type: travel_type,
+          percentage: percentage,
+        }),
       })
         .then((response) => response.json())
         .then((data) => {
@@ -169,8 +225,7 @@
         Math.floor(currentStart / questionsPerPage) * questionsPerPage;
       const end = Math.min(start + questionsPerPage, questions.length);
       const currentPageAnswers = answers.slice(start, end);
-
-      if (currentPageAnswers.some((answer) => answer === null)) {
+      if (currentPageAnswers.length !== questionsPerPage) {
         alert("Please answer all questions before proceeding.");
         return;
       }
