@@ -56,7 +56,7 @@ def load_or_parse_data(llamaparse_api_key):
     This function loads the parsed data from a file if it exists, otherwise it performs the parsing step and stores the result in a file.
     It utilises llamaparse to parse data from a pdf file.
     """
-    data_file = "data/parsed_data.pkl"
+    data_file = "static/data/parsed_data.pkl"
 
     if os.path.exists(data_file):
         try:
@@ -72,6 +72,8 @@ def load_or_parse_data(llamaparse_api_key):
             parsed_data = None
     else:
         parsed_data = None
+        file = open(data_file, "a")
+        file.close()
 
     pdf_files = []
     for root, _, files in os.walk("static/data/travel_guides"):
@@ -148,14 +150,18 @@ def initialise_vectorstore(llamaparse_api_key):
         # Call the function to either load or parse the data
         llama_parse_documents = load_or_parse_data(llamaparse_api_key)
         # print(llama_parse_documents[0].text[:100])
+        markdown_path = "static/data/output.md"
 
-        with open("data/output.md", "a") as f:  # Open the file in append mode ('a')
+        if not os.path.exists(markdown_path):
+            file = open(markdown_path, "a")
+            file.close()
+
+        with open(markdown_path, "a") as f:  # Open the file in append mode ('a')
             for pdf in llama_parse_documents:
                 print(f"writing to file...")
                 for doc in pdf:
                     f.write(doc.text + "\n")
 
-        markdown_path = "data/output.md"
         loader = UnstructuredMarkdownLoader(markdown_path)
 
         documents = loader.load()
@@ -291,6 +297,7 @@ def get_ai_response(
 
 # if __name__ == "__main__":
 #     store = {}
+
 #     retriever = initialise_vectorstore(llamaparse_api_key)
 #     session_id = "1"
 #     type = "enthusiast"
