@@ -46,9 +46,11 @@
     let percentage = [];
     let travel_type = "";
 
+    let userPreferredLanguage = localStorage.getItem("language") || "en";
+
     // Fetch questions from questions.json
     document.addEventListener("DOMContentLoaded", function () {
-      fetch("/static/data/travel_type/questions.json")
+      fetch(`/static/data/travel_type/questions-${userPreferredLanguage}.json`)
         .then((response) => {
           if (!response.ok) {
             throw new Error(
