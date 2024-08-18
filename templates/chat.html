@@ -1,10 +1,8 @@
 {% extends 'base.html' %} {% block body %}
 <div>
+
   <body>
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='style/chat.css') }}"
-    />
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/chat.css') }}" />
     <div id="splash-screen">
       <p>Creating your personal assistant chatbot...</p>
     </div>
@@ -13,13 +11,7 @@
         <div class="chat-container">
           <div class="chat-box" id="chat-box"></div>
           <div class="chat-input input-group">
-            <input
-              type="text"
-              id="user-input"
-              class="form-control"
-              placeholder="Type your enquiry here..."
-              required
-            />
+            <input type="text" id="user-input" class="form-control" placeholder="Type your enquiry here..." required />
             <div class="input-group-append">
               <button type="submit" id="send-button" class="btn btn-primary">
                 Send
@@ -62,7 +54,7 @@
 
         const loadingMessage = document.createElement("div");
         loadingMessage.classList.add("chat-bubble", "assistant");
-        loadingMessage.textContent = "Generating response...";
+        loadingMessage.textContent = "My dearly Sir/Madam, Wait I am thinking ..."; //왜 안돼지
         chatBox.appendChild(loadingMessage);
 
         chatBox.scrollTop = chatBox.scrollHeight;
