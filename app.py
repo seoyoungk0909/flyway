@@ -35,17 +35,19 @@ def test():
 @app.route("/result", methods=["POST"])
 def result():
     data = request.get_json()
-    answers = data.get("answers")
-    session["answers"] = answers
-    calculations = data.get("calculations")
-    session["calculations"] = calculations
+    session["answers"] = data.get("answers")
+    session["travel_type"] = data.get("travel_type")
+    session["percentage"] = data.get("percentage")
     return jsonify(redirect=url_for("result_page"))
 
 
 @app.route("/result_page")
 def result_page():
-    calculations = session.get("calculations", [])
-    return render_template("result.html", calculations=calculations)
+    travel_type = session.get("travel_type", [])
+    percentage = session.get("percentage", [None, None, None, None])
+    return render_template(
+        "result.html", travel_type=travel_type, percentage=percentage
+    )
 
 
 @app.route("/initialise_llm")
@@ -72,8 +74,9 @@ def get_response():
     if session.get("retriever_initialized") is None:
         return jsonify({"error": "LLM not initialized"}), 500
     session_id = session.get("id", "")
+    # TODO: PASS travel type and description
     ai_response = get_ai_response(
-        user_input, retriever, groq_api_key, chat_history_store, session_id
+        user_input, retriever, groq_api_key, chat_history_store, session_id, "", ""
     )
     return jsonify({"user_input": user_input, "ai_response": ai_response})
 
