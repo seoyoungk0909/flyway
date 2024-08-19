@@ -17,7 +17,7 @@
     }
   },
   "2": {
-    "question": "How would you like to fill your journey with, my dear princess?",
+    "question": "How would you like to fill your journey with, my dear?",
     "option_1": {
       "answer": "We paid all the way here. Experience everything that we can.",
       "calculation": {
@@ -68,7 +68,7 @@
     }
   },
   "5": {
-    "question": "For what noble purpose do you embark on this journey, my princess?",
+    "question": "For what noble purpose do you embark on this journey, sir/madam?",
     "option_1": {
       "answer": "Shop and buy and purchase. List out the MUST-BUY things in this country.",
       "calculation": {
@@ -77,7 +77,7 @@
       }
     },
     "option_2": {
-      "answer": "Visit all the landmarks. In this internet-developed generation, you can get all the stuff via online shopping.",
+      "answer": "Visit all the landmarks. You can just buy most of the stuff via online shopping.",
       "calculation": {
         "1": { "type": "naturalist", "point": 1 },
         "2": { "type": "saver", "point": 2 }
@@ -85,7 +85,7 @@
     }
   },
   "6": {
-    "question": "Dear sir/madam, when it comes to your journeys, do you prefer to follow your heart in the moment or meticulously plan ahead for efficiency?",
+    "question": "When it comes to your journeys, do you prefer to follow your heart in the moment or meticulously plan ahead for efficiency?",
     "option_1": {
       "answer": "My legs follow my heart. I would decide what to do depending on what I want to do at that moment.",
       "calculation": {
