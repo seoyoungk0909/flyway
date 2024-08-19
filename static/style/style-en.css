@@ -60,7 +60,7 @@ body {
   background-size: contain;
   background-repeat: no-repeat;
   height: 105vh;
-  background-color: #ffdfb9;
+  background-color: #fff5e1;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -110,7 +110,7 @@ body {
   background-size: contain;
   background-repeat: no-repeat;
   height: 105vh;
-  background-color: #ffdfb9;
+  background-color: #fff5e1;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -174,7 +174,7 @@ body {
 }
 
 .options-btn.selected {
-  background-color: #ffd990;
+  background-color: #ffda92;
   border-color: transparent;
 }
 
@@ -190,13 +190,17 @@ body {
   transform: translateX(-50%);
 }
 
-#nextBtn,
-#prevBtn {
+.test-btn {
   background-color: transparent;
-  color: #794b2a;
+  color: #a97754;
   border-color: transparent;
   font-size: 20px;
   position: relative;
+  cursor: pointer;
+}
+
+.test-btn:hover {
+  color: #794b2a;
 }
 
 /* chat.css */
