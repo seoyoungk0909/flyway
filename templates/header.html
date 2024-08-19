@@ -1,9 +1,4 @@
 <!-- header.html -->
-<link
-  rel="stylesheet"
-  href="{{ url_for('static', filename='style/header-footer.css') }}"
-/>
-
 <nav class="navbar navbar-expand-lg navbar-light custom-navbar">
   <button
     class="navbar-toggler"
@@ -77,16 +72,32 @@
   // Function to toggle Korean stylesheet based on language selection
   function toggleKoreanStylesheet(lang) {
     const head = document.querySelector("head");
-    const link = document.querySelector("#styles-link");
+    const existingLink = document.querySelector("#styles-link-kr");
 
-    if (link) {
-      head.removeChild(link); // Remove the old stylesheet link
-    } else if (lang === "kr") {
-      const newLink = document.createElement("link");
-      newLink.id = "styles-link";
-      newLink.rel = "stylesheet";
-      newLink.href = "./assets/css/style-kr.css"; // Path to Korean stylesheet
-      head.appendChild(newLink);
+    // Always ensure the default stylesheet is loaded
+    let defaultLink = document.querySelector("#styles-link-en");
+    if (!defaultLink) {
+      defaultLink = document.createElement("link");
+      defaultLink.id = "styles-link-en";
+      defaultLink.rel = "stylesheet";
+      defaultLink.href =
+        "{{ url_for('static', filename='style/style-en.css') }}"; // Path to English stylesheet
+      head.appendChild(defaultLink);
+    }
+
+    // Conditionally load the Korean stylesheet
+    if (lang === "kr") {
+      if (!existingLink) {
+        const newLink = document.createElement("link");
+        newLink.id = "styles-link-kr";
+        newLink.rel = "stylesheet";
+        newLink.href = "{{ url_for('static', filename='style/style-kr.css') }}"; // Path to Korean stylesheet
+        head.appendChild(newLink);
+      }
+    } else {
+      if (existingLink) {
+        head.removeChild(existingLink); // Remove the Korean stylesheet link if it exists
+      }
     }
   }
 </script>

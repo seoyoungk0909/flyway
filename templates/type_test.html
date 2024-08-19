@@ -1,36 +1,23 @@
 {% extends 'base.html' %} {% block body %}
-<body>
-  <link
-    rel="stylesheet"
-    href="{{ url_for('static', filename='style/type_test.css') }}"
-  />
+<div class="question-background">
   <div>
-    <div class="progress">
-      <div
-        id="progressBar"
-        class="progress-bar"
-        role="progressbar"
-        aria-valuenow="0"
-        aria-valuemin="0"
-        aria-valuemax="100"
-      ></div>
     </div>
     <div id="questionContainer">
       <!-- Questions will be inserted here by JavaScript -->
     </div>
     <div class="mt-3">
-      <button id="prevBtn" class="btn btn-primary" onclick="prevQuestion()">
+      <!-- <button id="prevBtn" class="btn btn-primary" onclick="prevQuestion()">
         Previous
       </button>
       <button id="nextBtn" class="btn btn-primary" onclick="nextQuestion()">
         Next
-      </button>
+      </button> -->
     </div>
   </div>
 
   <script>
     let currentStart = 0;
-    const questionsPerPage = 4;
+    const questionsPerPage = 1;
     let questions = [];
     let answers = new Array(questions.length).fill(null);
     let calculations = {
@@ -107,18 +94,25 @@
           .join("");
 
         questionsHTML += `
-            <div class="individual-question-container">
-              <h4>${q.question}</h4>
-              <div>${optionsHTML}</div>
-            </div>
-          `;
+              <div class="question">${q.question}</div>
+        <div class="options-container">${optionsHTML}</div>`;
       }
+
+      questionsHTML += `
+      <div class="button-container"><button id="prevBtn" onclick="prevQuestion()" style="">
+        <i class="fa-solid fa-arrow-left"></i>
+      </button>
+      <button id="nextBtn" onclick="nextQuestion()">
+        <i class="fa-solid fa-arrow-right"></i>
+      </button></div>
+    `;
+
 
       document.getElementById("questionContainer").innerHTML = questionsHTML;
       document.getElementById("prevBtn").style.display =
         start === 0 ? "none" : "inline-block";
-      document.getElementById("nextBtn").innerText =
-        end === questions.length ? "See Result" : "Next";
+      document.getElementById("nextBtn").innerHTML =
+        end === questions.length ? "See Result" : '<i class="fa-solid fa-arrow-right"></i>';
     }
 
     function selectAnswer(questionIndex, optionIndex) {
@@ -241,10 +235,10 @@
 
       // Update progress bar
       const progress = (currentStart / questions.length) * 100;
-      document
-        .getElementById("progressBar")
-        .setAttribute("aria-valuenow", progress);
-      document.getElementById("progressBar").style.width = `${progress}%`;
+      // document
+      //   .getElementById("progressBar")
+      //   .setAttribute("aria-valuenow", progress);
+      // document.getElementById("progressBar").style.width = `${progress}%`;
     }
     function prevQuestion() {
       if (currentStart > 0) {
@@ -257,5 +251,5 @@
       displayQuestion();
     };
   </script>
-</body>
+</div>
 {% endblock %}
