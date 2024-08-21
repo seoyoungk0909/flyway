@@ -1,0 +1,321 @@
+/* main.css */
+body {
+  margin: 0;
+  font-family: "Crimson Text", serif;
+}
+
+/* header-footer.css */
+.custom-navbar {
+  background-color: transparent;
+  position: relative;
+  padding: 30px 0;
+  text-align: center;
+  background-image: url("./svg/header.svg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: bottom;
+  font-family: "Crimson Text", serif;
+}
+
+.navbar-nav .nav-item {
+  margin: 0 15px;
+}
+
+.navbar-nav {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.nav-link {
+  color: #794b2a !important;
+  text-decoration: none;
+  font-size: 25px;
+  margin: 0 35px;
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+
+.nav-link:hover {
+  color: #321f11 !important;
+}
+
+.nav-link-small {
+  font-size: 17px; /* Adjust this value to make the font size smaller */
+  color: #794b2a !important;
+}
+
+.nav-link-small:hover {
+  color: #321f11 !important;
+}
+
+.small {
+  padding-top: 12px;
+  margin-right: 35px;
+}
+
+/* starting.css */
+.container-background {
+  background-image: url("./svg/home.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  height: 105vh;
+  background-color: #fff5e1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-position: center;
+  margin-top: -120px;
+  z-index: 1;
+}
+
+.container {
+  color: white;
+  margin-top: 135px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: "Great Vibes", cursive;
+}
+
+.starting-title {
+  font-size: 53px;
+}
+
+.starting-description {
+  margin-top: -15px;
+  font-size: 28px;
+}
+
+.starting-button {
+  padding-top: 290px;
+  color: white;
+  background-color: transparent;
+  font-size: 25px;
+  font-weight: 200;
+  font-family: "Crimson Text", serif;
+}
+
+.starting-button:hover {
+  color: white;
+  background-color: transparent;
+  font-size: 25px;
+}
+
+/* type_test.css */
+
+.question-background {
+  background-image: url("./svg/question-background.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  height: 105vh;
+  background-color: #fff5e1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-position: center;
+  margin-top: -120px;
+  z-index: 1;
+}
+
+.btn {
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+}
+
+#questionContainer {
+  background-image: url("./svg/question-container.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  margin-top: 250px;
+  height: 65%;
+  width: 100%;
+  position: relative;
+  font-family: "Crimson Text", serif;
+  text-align: center;
+}
+
+.question {
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  font-weight: 600;
+  font-size: 30px;
+}
+
+.options-container {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 100px;
+}
+
+.options-btn {
+  margin-top: 20px;
+  font-size: 26px;
+  font-weight: 400;
+  padding: 20px 30px;
+  border-radius: 30px;
+  border-color: transparent;
+  width: 30%;
+  height: auto;
+  margin-left: 10px;
+}
+
+.options-btn.selected {
+  background-color: #ffda92;
+  border-color: transparent;
+}
+
+.options-btn.unselected {
+  background-color: #fff5e1;
+  border-color: transparent;
+}
+
+.button-container {
+  position: absolute;
+  bottom: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.test-btn {
+  background-color: transparent;
+  color: #a97754;
+  border-color: transparent;
+  font-size: 20px;
+  position: relative;
+  cursor: pointer;
+}
+
+.test-btn:hover {
+  color: #794b2a;
+}
+
+/* chat.css */
+body {
+  font-family: Arial, sans-serif;
+}
+
+.chat-container {
+  width: 100%;
+  height: 80vh;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-box {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  flex: 1;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.chat-bubble {
+  padding: 10px;
+  border-radius: 15px;
+  margin-bottom: 10px;
+  max-width: 70%;
+  position: relative;
+  word-wrap: break-word;
+}
+
+.chat-bubble::after {
+  content: "";
+  position: absolute;
+  border-style: solid;
+}
+
+.chat-bubble.assistant {
+  background-color: #e1ffc7;
+  align-self: flex-start;
+}
+
+.chat-bubble.assistant::after {
+  border-width: 10px 10px 10px 0;
+  border-color: transparent #e1ffc7 transparent transparent;
+  left: -10px;
+  top: 10px;
+}
+
+.chat-bubble.user {
+  background-color: #d1e7ff;
+  align-self: flex-end;
+  text-align: right;
+}
+
+.chat-bubble.user::after {
+  border-width: 10px 0 10px 10px;
+  border-color: transparent transparent transparent #d1e7ff;
+  right: -10px;
+  top: 10px;
+}
+
+.chat-input {
+  display: flex;
+}
+
+.chat-input input[type="text"] {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px 0 0 5px;
+}
+
+.chat-input button {
+  padding: 10px 20px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  border-radius: 0 5px 5px 0;
+  cursor: pointer;
+}
+
+.chat-input button:hover {
+  background-color: #0056b3;
+}
+
+.message img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 5px;
+}
+
+#splash-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+#splash-screen.hidden {
+  display: none;
+}

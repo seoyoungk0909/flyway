@@ -1,250 +1,254 @@
 {% extends 'base.html' %} {% block body %}
-
-<body>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style/type_test.css') }}" />
+<div class="question-background">
   <div>
-    <div class="progress">
-      <div id="progressBar" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0"
-        aria-valuemax="100"></div>
-    </div>
-    <div id="">
-      <!-- Questions will be inserted here by JavaScript -->
-    </div>
-    <div class="mt-3">
-      <button id="prevBtn" class="btn btn-primary" onclick="prevQuestion()">
+  </div>
+  <div id="">
+    <!-- Questions will be inserted here by JavaScript -->
+  </div>
+  <div class="mt-3">
+    <!-- <button id="prevBtn" class="btn btn-primary" onclick="prevQuestion()">
         Previous
       </button>
       <button id="nextBtn" class="btn btn-primary" onclick="nextQuestion()">
         Next
-      </button>
-    </div>
+      </button> -->
   </div>
+</div>
 
-  <script>
-    let currentStart = 0;
-    const questionsPerPage = 4;
-    let questions = [];
-    let answers = new Array(questions.length).fill(null);
-    let calculations = {
-      energetic: 0,
-      relaxed: 0,
-      planned: 0,
-      spontaneous: 0,
-      urbanite: 0,
-      naturalist: 0,
-      saver: 0,
-      spender: 0,
-    };
-    let percentage = [];
-    let travel_type = "";
+<script>
+  let currentStart = 0;
+  const questionsPerPage = 1;
+  let questions = [];
+  let answers = new Array(questions.length).fill(null);
+  let calculations = {
+    energetic: 0,
+    relaxed: 0,
+    planned: 0,
+    spontaneous: 0,
+    urbanite: 0,
+    naturalist: 0,
+    saver: 0,
+    spender: 0,
+  };
+  let percentage = [];
+  let travel_type = "";
 
-    // Fetch questions from questions.json
-    document.addEventListener("DOMContentLoaded", function () {
-      fetch("/static/data/travel_type/questions.json")
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error(
-              "Network response was not ok " + response.statusText
-            );
-          }
-          return response.json();
-        })
-        .then((data) => {
-          questions = transformData(data);
-          // console.log(questions);
-          displayQuestion();
-        })
-        .catch((error) => console.error("Error fetching JSON data:", error));
-    });
+  let userPreferredLanguage = localStorage.getItem("language") || "en";
 
-    // Load json into a question array
-    function transformData(data) {
-      const questionsArray = [];
-      for (const key in data) {
-        if (data.hasOwnProperty(key)) {
-          const question = data[key];
-          const options = [question.option_1.answer, question.option_2.answer];
-          const calculations = [
-            question.option_1.calculation,
-            question.option_2.calculation,
-          ];
-          questionsArray.push({
-            question: question.question,
-            options: options,
-            calculations: calculations,
-          });
+  // Fetch questions from questions.json
+  document.addEventListener("DOMContentLoaded", function () {
+    fetch(`/static/data/travel_type/questions-${userPreferredLanguage}.json`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(
+            "Network response was not ok " + response.statusText
+          );
         }
-      }
-      // console.log(questionsArray);
-      return questionsArray;
-    }
-
-    function displayQuestion() {
-      const start =
-        Math.floor(currentStart / questionsPerPage) * questionsPerPage;
-      const end = Math.min(start + questionsPerPage, questions.length);
-      let questionsHTML = "";
-
-      for (let i = start; i < end; i++) {
-        const q = questions[i];
-        let optionsHTML = q.options
-          .map((option, index) => {
-            let isSelected = answers[i] === index;
-            return `<button class="options-btn ${isSelected ? "selected" : "unselected"
-              }" onclick="selectAnswer(${i}, ${index})">${option}</button>`;
-          })
-          .join("");
-
-        questionsHTML += `
-            <div class="individual-question-container">
-              <h4>${q.question}</h4>
-              <div>${optionsHTML}</div>
-            </div>
-          `;
-      }
-
-      document.getElementById("questionContainer").innerHTML = questionsHTML;
-      document.getElementById("prevBtn").style.display =
-        start === 0 ? "none" : "inline-block";
-      document.getElementById("nextBtn").innerText =
-        end === questions.length ? "See Result" : "Next";
-    }
-
-    function selectAnswer(questionIndex, optionIndex) {
-      answers[questionIndex] = optionIndex;
-      displayQuestion(); // Re-render the questions to update button styles
-    }
-
-    function calculatePoints() {
-      // Reset calculations
-      for (let key in calculations) {
-        calculations[key] = 0;
-      }
-
-      answers.forEach((optionIndex, questionIndex) => {
-        if (optionIndex !== null) {
-          const selectedOptionCalculations =
-            questions[questionIndex].calculations[optionIndex];
-          for (const key in selectedOptionCalculations) {
-            if (selectedOptionCalculations.hasOwnProperty(key)) {
-              const calc = selectedOptionCalculations[key];
-              calculations[calc.type] += calc.point;
-            }
-          }
-        }
-      });
-    }
-
-    // Helper function to calculate percentage of target value between two values
-    function calculatePercentage(target, other) {
-      return (target / (target + other)) * 100;
-    }
-
-    function calculatePercentageAndType() {
-      // TODO: Better error handling (when both percentage is 0)
-      let letterMapping = {
-        energetic: "E",
-        relaxed: "R",
-        planned: "P",
-        spontaneous: "O",
-        urbanite: "U",
-        naturalist: "N",
-        saver: "A",
-        spender: "S",
-      };
-
-      let keys = Object.keys(calculations);
-
-      for (let i = 0; i < keys.length; i += 2) {
-        let percent1 = null;
-        let percent2 = null;
-        let type = "";
-        let letter = "";
-
-        // calculate percentage for first type, round to integer
-        percent1 = Math.round(
-          (calculations[keys[i]] /
-            (calculations[keys[i]] + calculations[keys[i + 1]])) *
-          100
-        );
-
-        // calculate percent for the corresponding type
-        if (percent1 != null) {
-          percent2 = 100 - percent1;
-        }
-
-        // determine which type is greater
-        type = percent1 > percent2 ? keys[i] : keys[i + 1];
-
-        // determine the letter for the type
-        letter = letterMapping[type] || "";
-        travel_type += letter;
-
-        percentage.push([keys[i], percent1], [keys[i + 1], percent2]);
-      }
-      // console.log("travel_type: ", travel_type);
-      // console.log("percentage: ", percentage);
-    }
-
-    function submitAnswers() {
-      calculatePoints();
-      calculatePercentageAndType();
-      fetch("/result", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          answers: answers,
-          travel_type: travel_type,
-          percentage: percentage,
-        }),
+        return response.json();
       })
-        .then((response) => response.json())
-        .then((data) => {
-          if (data.redirect) {
-            window.location.href = data.redirect;
-          }
-        })
-        .catch((error) => {
-          console.error("Error:", error);
+      .then((data) => {
+        questions = transformData(data);
+        // console.log(questions);
+        displayQuestion();
+      })
+      .catch((error) => console.error("Error fetching JSON data:", error));
+  });
+
+  // Load json into a question array
+  function transformData(data) {
+    const questionsArray = [];
+    for (const key in data) {
+      if (data.hasOwnProperty(key)) {
+        const question = data[key];
+        const options = [question.option_1.answer, question.option_2.answer];
+        const calculations = [
+          question.option_1.calculation,
+          question.option_2.calculation,
+        ];
+        questionsArray.push({
+          question: question.question,
+          options: options,
+          calculations: calculations,
         });
-    }
-
-    function nextQuestion() {
-      const start =
-        Math.floor(currentStart / questionsPerPage) * questionsPerPage;
-      const end = Math.min(start + questionsPerPage, questions.length);
-      const currentPageAnswers = answers.slice(start, end);
-      if (currentPageAnswers.length !== questionsPerPage) {
-        alert("Please answer all questions before proceeding.");
-        return;
-      }
-
-      if (end < questions.length - 1) {
-        currentStart += questionsPerPage;
-        displayQuestion();
-      } else {
-        submitAnswers();
-      }
-
-      // Update progress bar
-      const progress = (currentStart / questions.length) * 100;
-      document
-        .getElementById("progressBar")
-        .setAttribute("aria-valuenow", progress);
-      document.getElementById("progressBar").style.width = `${progress}%`;
-    }
-    function prevQuestion() {
-      if (currentStart > 0) {
-        currentStart -= questionsPerPage;
-        displayQuestion();
       }
     }
+    // console.log(questionsArray);
+    return questionsArray;
+  }
 
-    window.onload = function () {
-      displayQuestion();
+  function displayQuestion() {
+    const start =
+      Math.floor(currentStart / questionsPerPage) * questionsPerPage;
+    const end = Math.min(start + questionsPerPage, questions.length);
+    let questionsHTML = "";
+
+    for (let i = start; i < end; i++) {
+      const q = questions[i];
+      let optionsHTML = q.options
+        .map((option, index) => {
+          let isSelected = answers[i] === index;
+          return `<button class="options-btn ${isSelected ? "selected" : "unselected"
+            }" onclick="selectAnswer(${i}, ${index})">${option}</button>`;
+        })
+        .join("");
+
+      questionsHTML += `
+              <div class="question">${q.question}</div>
+        <div class="options-container">${optionsHTML}</div>`;
+    }
+
+    questionsHTML += `
+      <div class="button-container"><button class="test-btn" id="prevBtn" onclick="prevQuestion()" style="">
+        <i class="fa-solid fa-arrow-left"></i>
+      </button>
+      <button id="nextBtn" class="test-btn" onclick="nextQuestion()">
+        <i class="fa-solid fa-arrow-right"></i>
+      </button></div>
+    `;
+
+
+    document.getElementById("questionContainer").innerHTML = questionsHTML;
+    document.getElementById("prevBtn").style.display =
+      start === 0 ? "none" : "inline-block";
+    document.getElementById("nextBtn").innerHTML =
+      end === questions.length ? "See Result" : '<i class="fa-solid fa-arrow-right"></i>';
+  }
+
+  function selectAnswer(questionIndex, optionIndex) {
+    answers[questionIndex] = optionIndex;
+    displayQuestion(); // Re-render the questions to update button styles
+  }
+
+  function calculatePoints() {
+    // Reset calculations
+    for (let key in calculations) {
+      calculations[key] = 0;
+    }
+
+    answers.forEach((optionIndex, questionIndex) => {
+      if (optionIndex !== null) {
+        const selectedOptionCalculations =
+          questions[questionIndex].calculations[optionIndex];
+        for (const key in selectedOptionCalculations) {
+          if (selectedOptionCalculations.hasOwnProperty(key)) {
+            const calc = selectedOptionCalculations[key];
+            calculations[calc.type] += calc.point;
+          }
+        }
+      }
+    });
+  }
+
+  // Helper function to calculate percentage of target value between two values
+  function calculatePercentage(target, other) {
+    return (target / (target + other)) * 100;
+  }
+
+  function calculatePercentageAndType() {
+    // TODO: Better error handling (when both percentage is 0)
+    let letterMapping = {
+      energetic: "E",
+      relaxed: "R",
+      planned: "P",
+      spontaneous: "O",
+      urbanite: "U",
+      naturalist: "N",
+      saver: "A",
+      spender: "S",
     };
-  </script>
-</body>
+
+    let keys = Object.keys(calculations);
+
+    for (let i = 0; i < keys.length; i += 2) {
+      let percent1 = null;
+      let percent2 = null;
+      let type = "";
+      let letter = "";
+
+      // calculate percentage for first type, round to integer
+      percent1 = Math.round(
+        (calculations[keys[i]] /
+          (calculations[keys[i]] + calculations[keys[i + 1]])) *
+        100
+      );
+
+      // calculate percent for the corresponding type
+      if (percent1 != null) {
+        percent2 = 100 - percent1;
+      }
+
+      // determine which type is greater
+      type = percent1 > percent2 ? keys[i] : keys[i + 1];
+
+      // determine the letter for the type
+      letter = letterMapping[type] || "";
+      travel_type += letter;
+
+      percentage.push([keys[i], percent1], [keys[i + 1], percent2]);
+    }
+    // console.log("travel_type: ", travel_type);
+    // console.log("percentage: ", percentage);
+  }
+
+  function submitAnswers() {
+    calculatePoints();
+    calculatePercentageAndType();
+    fetch("/result", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        answers: answers,
+        travel_type: travel_type,
+        percentage: percentage,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.redirect) {
+          window.location.href = data.redirect;
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }
+
+  function nextQuestion() {
+    const start =
+      Math.floor(currentStart / questionsPerPage) * questionsPerPage;
+    const end = Math.min(start + questionsPerPage, questions.length);
+    const currentPageAnswers = answers.slice(start, end);
+    if (currentPageAnswers.length !== questionsPerPage) {
+      alert("Please answer all questions before proceeding.");
+      return;
+    }
+
+    if (end < questions.length - 1) {
+      currentStart += questionsPerPage;
+      displayQuestion();
+    } else {
+      submitAnswers();
+    }
+
+    // Update progress bar
+    const progress = (currentStart / questions.length) * 100;
+    // document
+    //   .getElementById("progressBar")
+    //   .setAttribute("aria-valuenow", progress);
+    // document.getElementById("progressBar").style.width = `${progress}%`;
+  }
+  function prevQuestion() {
+    if (currentStart > 0) {
+      currentStart -= questionsPerPage;
+      displayQuestion();
+    }
+  }
+
+  window.onload = function () {
+    displayQuestion();
+  };
+</script>
+</div>
 {% endblock %}

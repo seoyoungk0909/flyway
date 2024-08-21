@@ -1,6 +1,5 @@
 <!-- header.html -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="#"> ✈️ FLYWAY </a>
+<nav class="navbar navbar-expand-lg navbar-light custom-navbar">
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
     aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -8,9 +7,86 @@
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav">
       <li class="nav-item active">
-        <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="/" data-i18n="nav_home"></a>
+        <span class="sr-only">(current)</span>
       </li>
-      <!-- Add more navigation items here -->
+      <li class="nav-item">
+        <a class="nav-link" href="/" data-i18n="nav_about_us"></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/" data-i18n="nav_travel_types"></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/chat" data-i18n="nav_chat"></a>
+      </li>
+      <li class="nav-item">
+        <p class="small">
+          <a class="nav-link-small" href="#" onclick="changeLanguage('en')">English</a>
+          |
+          <a class="nav-link-small" href="#" onclick="changeLanguage('kr')">한국어</a>
+        </p>
+      </li>
     </ul>
   </div>
 </nav>
+
+<script>
+  function updateContent(langData) {
+    document.querySelectorAll("[data-i18n]").forEach((element) => {
+      const key = element.getAttribute("data-i18n");
+      element.textContent = langData[key];
+    });
+  }
+  // Function to set the language preference
+  function setLanguagePreference(lang) {
+    localStorage.setItem("language", lang);
+    location.reload();
+  }
+
+  // Function to fetch language data
+  async function fetchLanguageData(lang) {
+    const response = await fetch(`static/languages/${lang}.json`);
+    return response.json();
+  }
+
+  // Function to change language
+  async function changeLanguage(lang) {
+    await setLanguagePreference(lang);
+
+    const langData = await fetchLanguageData(lang);
+    updateContent(langData);
+    toggleKoreanStylesheet(lang); // Toggle Korean stylesheet
+  }
+
+  // Function to toggle Korean stylesheet based on language selection
+  function toggleKoreanStylesheet(lang) {
+    const head = document.querySelector("head");
+    const existingLink = document.querySelector("#styles-link-kr");
+
+    // Always ensure the default stylesheet is loaded
+    let defaultLink = document.querySelector("#styles-link-en");
+    if (!defaultLink) {
+      defaultLink = document.createElement("link");
+      defaultLink.id = "styles-link-en";
+      defaultLink.rel = "stylesheet";
+      defaultLink.href =
+        "{{ url_for('static', filename='style/style-en.css') }}"; // Path to English stylesheet
+      head.appendChild(defaultLink);
+    }
+
+    // Conditionally load the Korean stylesheet
+    if (lang === "kr") {
+      if (!existingLink) {
+        const newLink = document.createElement("link");
+        newLink.id = "styles-link-kr";
+        newLink.rel = "stylesheet";
+        newLink.href = "{{ url_for('static', filename='style/style-kr.css') }}"; // Path to Korean stylesheet
+        head.appendChild(newLink);
+      }
+    } else {
+      if (existingLink) {
+        head.removeChild(existingLink); // Remove the Korean stylesheet link if it exists
+      }
+    }
+  }
+</script>

@@ -1,0 +1,28 @@
+.custom-navbar {
+  font-family: "Song Myung", serif;
+}
+
+.starting-title {
+  font-size: 55px;
+  margin-top: -20px;
+}
+
+.starting-description {
+  font-size: 28px;
+  margin-top: -10px;
+}
+
+.container {
+  color: white;
+  margin-top: 160px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: "Song Myung", serif;
+  font-weight: 400;
+}
+
+.starting-button {
+  padding-top: 290px;
+  font-family: "Song Myung", serif;
+}
