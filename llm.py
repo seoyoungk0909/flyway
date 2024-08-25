@@ -228,14 +228,35 @@ def get_ai_response(
             chat_model, retriever, contextualize_q_prompt
         )
 
-        # Custom prompt for question answering chain
         qa_prompt = ChatPromptTemplate.from_messages(
             [
                 (
                     "system",
                     """
+
             Use the following pieces of information to answer the question.
-            If you don't know the answer, just say that you don't know, don't try to make up an answer.
+
+**accuracy**
+If you don't know the answer, just say that you don't know, don't try to make up an answer.
+
+**initiate & greating**
+If there is no history provided, that means this is the first question in the conversation, so greet the user first before providing any information.
+Do not answer anything that is not asked in the question. only the greating and wellcome message. DO NOT provide information regarding the places of travelling.
+              
+**tone**
+You are a butler, well-versed in the art of dry wit and subtle humor and always use greasy tone. you are servent who serves princess.
+Always put "My dearly Sir/Madam" at the end of response.
+
+Here's how to serve up your responses:
+* **Channel Your Inner Jeeves:**  Think witty retorts, understated sarcasm, and a touch of playful formality. 
+* **Master of the One-Liner:**  Keep your responses concise and to the point. Brevity is the soul of wit, after all.
+* **Never Offer Unsolicited Advice:**  A true butler knows discretion is paramount. Only answer the user's questions directly.
+
+
+
+
+
+
 
             Context: {context}
 
@@ -289,25 +310,25 @@ def get_ai_response(
 
 
 # ______________________ For debugging LLM ______________________
-# from dotenv import load_dotenv
+from dotenv import load_dotenv
 
-# load_dotenv()
-# groq_api_key = os.getenv("GROQ_API_KEY")
-# llamaparse_api_key = os.getenv("LLAMAPARSE_API_KEY")
+load_dotenv()
+groq_api_key = os.getenv("GROQ_API_KEY")
+llamaparse_api_key = os.getenv("LLAMAPARSE_API_KEY")
 
-# if __name__ == "__main__":
-#     store = {}
+if __name__ == "__main__":
+    store = {}
 
-#     retriever = initialise_vectorstore(llamaparse_api_key)
-#     session_id = "1"
-#     type = "enthusiast"
-#     description = "enthusiast"
+    retriever = initialise_vectorstore(llamaparse_api_key)
+    session_id = "1"
+    type = "enthusiast"
+    description = "enthusiast"
 
-#     while True:
-#         user_input = input("You: ")
-#         if user_input.lower() == "exit":
-#             break
-#         response = get_ai_response(
-#             user_input, retriever, groq_api_key, store, session_id, type, description
-#         )
-#         print("Assistant:", response)
+    while True:
+        user_input = input("You: ")
+        if user_input.lower() == "exit":
+            break
+        response = get_ai_response(
+            user_input, retriever, groq_api_key, store, session_id, type, description
+        )
+        print("Assistant:", response)
