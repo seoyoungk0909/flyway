@@ -1,5 +1,6 @@
 {% extends 'base.html' %} {% block body %}
 <div>
+
   <body>
     <div id="splash-screen">
       <p data-i18n="loading"></p>
@@ -9,13 +10,7 @@
         <div class="chat-container">
           <div class="chat-box" id="chat-box"></div>
           <div class="chat-input input-group">
-            <input
-              type="text"
-              id="user-input"
-              class="form-control"
-              placeholder="Type your enquiry here..."
-              required
-            />
+            <input type="text" id="user-input" class="form-control" placeholder="Type your enquiry here..." required />
             <div class="input-group-append">
               <button type="submit" id="send-button" class="btn btn-primary">
                 Send
@@ -45,7 +40,19 @@
         }
       }
 
+      const typeTestCompleted = localStorage.getItem('result')
+      // let typeTestCompleted = true;
+
       function sendMessage() {
+
+        // Check if the type test is completed before sending the message
+        if (!typeTestCompleted) {
+          alert("You have not finished the type test, please finish the travel type test first");
+          window.location.href = '/type_test';
+          return;
+        }
+
+
         const userInput = document.getElementById("user-input").value;
         if (!userInput) return;
         document.getElementById("user-input").value = "";
@@ -58,7 +65,7 @@
 
         const loadingMessage = document.createElement("div");
         loadingMessage.classList.add("chat-bubble", "assistant");
-        loadingMessage.textContent = "Generating response...";
+        loadingMessage.textContent = "My dearly Sir/Madam, Wait I am thinking ...❤️‍🔥";
         chatBox.appendChild(loadingMessage);
 
         chatBox.scrollTop = chatBox.scrollHeight;
@@ -98,6 +105,10 @@
             chatBox.appendChild(errorMessage);
             chatBox.scrollTop = chatBox.scrollHeight;
           });
+      }
+
+      function markTypeTestComplete() {
+        typeTestCompleted = true;
       }
 
       document
