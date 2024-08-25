@@ -6,12 +6,6 @@
       <!-- Questions will be inserted here by JavaScript -->
     </div>
     <div class="mt-3">
-      <!-- <button id="prevBtn" class="btn btn-primary" onclick="prevQuestion()">
-        Previous
-      </button>
-      <button id="nextBtn" class="btn btn-primary" onclick="nextQuestion()">
-        Next
-      </button> -->
     </div>
   </div>
 
@@ -23,82 +17,87 @@
     let calculations = {
       energetic: 0,
       relaxed: 0,
-      planned: 0,
       spontaneous: 0,
-      urbanite: 0,
-      naturalist: 0,
-      saver: 0,
-      spender: 0,
+      planned: 0,
+      modern: 0,
+      authentic: 0,
+      saving: 0,
+      spending: 0,
+      risk: 0,
+      cautious: 0,
     };
+
     let percentage = [];
     let travel_type = "";
+    let progress = 0;
 
-    let userPreferredLanguage = localStorage.getItem("language") || "en";
+  let userPreferredLanguage = localStorage.getItem("language") || "en";
 
-    // Fetch questions from questions.json
-    document.addEventListener("DOMContentLoaded", function () {
-      fetch(`/static/data/travel_type/questions-${userPreferredLanguage}.json`)
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error(
-              "Network response was not ok " + response.statusText
-            );
-          }
-          return response.json();
-        })
-        .then((data) => {
-          questions = transformData(data);
-          // console.log(questions);
-          displayQuestion();
-        })
-        .catch((error) => console.error("Error fetching JSON data:", error));
-    });
-
-    // Load json into a question array
-    function transformData(data) {
-      const questionsArray = [];
-      for (const key in data) {
-        if (data.hasOwnProperty(key)) {
-          const question = data[key];
-          const options = [question.option_1.answer, question.option_2.answer];
-          const calculations = [
-            question.option_1.calculation,
-            question.option_2.calculation,
-          ];
-          questionsArray.push({
-            question: question.question,
-            options: options,
-            calculations: calculations,
-          });
+  // Fetch questions from questions.json
+  document.addEventListener("DOMContentLoaded", function () {
+    fetch(`/static/data/travel_type/questions-${userPreferredLanguage}.json`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(
+            "Network response was not ok " + response.statusText
+          );
         }
+        return response.json();
+      })
+      .then((data) => {
+        questions = transformData(data);
+        // console.log(questions);
+        displayQuestion();
+      })
+      .catch((error) => console.error("Error fetching JSON data:", error));
+  });
+
+  // Load json into a question array
+  function transformData(data) {
+    const questionsArray = [];
+    for (const key in data) {
+      if (data.hasOwnProperty(key)) {
+        const question = data[key];
+        const options = [question.option_1.answer, question.option_2.answer];
+        const calculations = [
+          question.option_1.calculation,
+          question.option_2.calculation,
+        ];
+        questionsArray.push({
+          question: question.question,
+          options: options,
+          calculations: calculations,
+        });
       }
-      // console.log(questionsArray);
-      return questionsArray;
     }
+    // console.log(questionsArray);
+    return questionsArray;
+  }
 
     function displayQuestion() {
       const start =
         Math.floor(currentStart / questionsPerPage) * questionsPerPage;
       const end = Math.min(start + questionsPerPage, questions.length);
       let questionsHTML = "";
+      // console.log("current question:", start);
+      // console.log("current progress", progress);
 
-      for (let i = start; i < end; i++) {
-        const q = questions[i];
-        let optionsHTML = q.options
-          .map((option, index) => {
-            let isSelected = answers[i] === index;
-            return `<button class="options-btn ${
-              isSelected ? "selected" : "unselected"
+    for (let i = start; i < end; i++) {
+      const q = questions[i];
+      let optionsHTML = q.options
+        .map((option, index) => {
+          let isSelected = answers[i] === index;
+          return `<button class="options-btn ${isSelected ? "selected" : "unselected"
             }" onclick="selectAnswer(${i}, ${index})">${option}</button>`;
-          })
-          .join("");
-
-        questionsHTML += `
-              <div class="question">${q.question}</div>
-        <div class="options-container">${optionsHTML}</div>`;
-      }
+        })
+        .join("");
 
       questionsHTML += `
+              <div class="question">${q.question}</div>
+        <div class="options-container">${optionsHTML}</div>`;
+    }
+
+    questionsHTML += `
       <div class="button-container"><button class="test-btn" id="prevBtn" onclick="prevQuestion()" style="">
         <i class="fa-solid fa-arrow-left"></i>
       </button>
@@ -113,12 +112,14 @@
         start === 0 ? "none" : "inline-block";
       document.getElementById("nextBtn").innerHTML =
         end === questions.length ? "See Result" : '<i class="fa-solid fa-arrow-right"></i>';
-    }
+        updateBackgroundImage();
 
-    function selectAnswer(questionIndex, optionIndex) {
-      answers[questionIndex] = optionIndex;
-      displayQuestion(); // Re-render the questions to update button styles
-    }
+      }
+
+  function selectAnswer(questionIndex, optionIndex) {
+    answers[questionIndex] = optionIndex;
+    displayQuestion(); // Re-render the questions to update button styles
+  }
 
     function calculatePoints() {
       // Reset calculations
@@ -140,55 +141,54 @@
       });
     }
 
-    // Helper function to calculate percentage of target value between two values
-    function calculatePercentage(target, other) {
-      return (target / (target + other)) * 100;
-    }
+  // Helper function to calculate percentage of target value between two values
+  function calculatePercentage(target, other) {
+    return (target / (target + other)) * 100;
+  }
 
     function calculatePercentageAndType() {
       // TODO: Better error handling (when both percentage is 0)
       let letterMapping = {
         energetic: "E",
         relaxed: "R",
-        planned: "P",
         spontaneous: "O",
-        urbanite: "U",
-        naturalist: "N",
-        saver: "A",
-        spender: "S",
+        planned: "P",
+        modern: "U",
+        authentic: "N",
+        saving: "A",
+        spending: "S",
       };
 
-      let keys = Object.keys(calculations);
+    let keys = Object.keys(calculations);
 
-      for (let i = 0; i < keys.length; i += 2) {
-        let percent1 = null;
-        let percent2 = null;
-        let type = "";
-        let letter = "";
+    for (let i = 0; i < keys.length; i += 2) {
+      let percent1 = null;
+      let percent2 = null;
+      let type = "";
+      let letter = "";
 
         // calculate percentage for first type, round to integer
-        percent1 = Math.round(
-          (calculations[keys[i]] /
-            (calculations[keys[i]] + calculations[keys[i + 1]])) *
-            100
-        );
-
-        // calculate percent for the corresponding type
-        if (percent1 != null) {
+        let base = calculations[keys[i]] + calculations[keys[i + 1]];
+        if (base === 0) {
+          percent1 = 0;
+          percent2 = 0;
+        } else {
+          percent1 = Math.round(calculations[keys[i]] / base * 100);
           percent2 = 100 - percent1;
         }
 
-        // determine which type is greater
-        type = percent1 > percent2 ? keys[i] : keys[i + 1];
+      // determine which type is greater
+      type = percent1 > percent2 ? keys[i] : keys[i + 1];
 
-        // determine the letter for the type
-        letter = letterMapping[type] || "";
-        travel_type += letter;
+      // determine the letter for the type
+      letter = letterMapping[type] || "";
+      travel_type += letter;
 
         percentage.push([keys[i], percent1], [keys[i + 1], percent2]);
       }
-      // console.log("travel_type: ", travel_type);
-      // console.log("percentage: ", percentage);
+
+      console.log("travel_type: ", travel_type);
+      console.log("percentage: ", percentage);
     }
 
     function submitAnswers() {
@@ -216,17 +216,17 @@
         });
     }
 
-    function nextQuestion() {
-      const start =
-        Math.floor(currentStart / questionsPerPage) * questionsPerPage;
-      const end = Math.min(start + questionsPerPage, questions.length);
-      const currentPageAnswers = answers.slice(start, end);
-      if (currentPageAnswers.length !== questionsPerPage) {
-        alert("Please answer all questions before proceeding.");
-        return;
-      }
+  function nextQuestion() {
+    const start =
+      Math.floor(currentStart / questionsPerPage) * questionsPerPage;
+    const end = Math.min(start + questionsPerPage, questions.length);
+    const currentPageAnswers = answers.slice(start, end);
+    if (currentPageAnswers.length !== questionsPerPage) {
+      alert("Please answer all questions before proceeding.");
+      return;
+    }
 
-      if (end < questions.length - 1) {
+      if (end < questions.length) {
         currentStart += questionsPerPage;
         displayQuestion();
       } else {
@@ -234,11 +234,7 @@
       }
 
       // Update progress bar
-      const progress = (currentStart / questions.length) * 100;
-      // document
-      //   .getElementById("progressBar")
-      //   .setAttribute("aria-valuenow", progress);
-      // document.getElementById("progressBar").style.width = `${progress}%`;
+      progress = (currentStart / questions.length) * 100;
     }
     function prevQuestion() {
       if (currentStart > 0) {
@@ -247,9 +243,21 @@
       }
     }
 
-    window.onload = function () {
-      displayQuestion();
-    };
-  </script>
+    function updateBackgroundImage() {
+      const questionIndex = Math.floor(currentStart / questionsPerPage);
+      let backgroundImage = "url('/static/style/svg/question-background.svg')";
+      if (questionIndex > 7) {
+        const index = Math.min(questionIndex - 7, 8);
+        // console.log("index", index);
+        backgroundImage = `url('/static/style/svg/question-background-${index}.svg')`;
+      }
+      document.querySelector(".question-background").style.backgroundImage = backgroundImage;
+    }
+
+
+  window.onload = function () {
+    displayQuestion();
+  };
+</script>
 </div>
 {% endblock %}

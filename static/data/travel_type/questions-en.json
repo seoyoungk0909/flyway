@@ -4,15 +4,15 @@
     "option_1": {
       "answer": "Take photos as much as possible! Posting on social media is all about travel.",
       "calculation": {
-        "1": { "type": "urbanite", "point": 1 },
-        "2": { "type": "spender", "point": 2 }
+        "1": { "type": "modern", "point": 2 },
+        "2": { "type": "spending", "point": 1 }
       }
     },
     "option_2": {
       "answer": "Let's take it with our own eyes. Photos are just things in an electronic device.",
       "calculation": {
-        "1": { "type": "naturalist", "point": 1 },
-        "2": { "type": "saver", "point": 2 }
+        "1": { "type": "relaxed", "point": 1 },
+        "2": { "type": "saving", "point": 1 }
       }
     }
   },
@@ -22,7 +22,8 @@
       "answer": "We paid all the way here. Experience everything that we can.",
       "calculation": {
         "1": { "type": "energetic", "point": 2 },
-        "2": { "type": "planned", "point": 1 }
+        "2": { "type": "planned", "point": 2 },
+        "3": { "type": "modern", "point": 1 }
       }
     },
     "option_2": {
@@ -34,70 +35,75 @@
     }
   },
   "3": {
-    "question": "Pray tell, which restaurant pleases you the most?",
+    "question": "Might I ask, what is your esteemed approach to dining whilst traversing the world?",
     "option_1": {
-      "answer": "Proven restaurants with high ratings and lots of reviews. Instagrammable restaurants are a plus.",
+      "answer": "Proven restaurants with high ratings and lots of reviews. Fine dining or Instagrammable restaurants are a plus.",
       "calculation": {
-        "1": { "type": "urbanite", "point": 1 },
-        "2": { "type": "spender", "point": 2 }
+        "1": { "type": "modern", "point": 2 },
+        "2": { "type": "spending", "point": 2 },
+        "3": { "type": "cautious", "point": 1 }
       }
     },
     "option_2": {
-      "answer": "Live like a local, eat like a local. Enjoy authentic flavors and experiences in local restaurants.",
+      "answer": "Live like a local, eat like a local. Enjoy authentic flavors and experiences in local restaurants or street food vendors.",
       "calculation": {
-        "1": { "type": "naturalist", "point": 1 },
-        "2": { "type": "saver", "point": 2 }
+        "1": { "type": "authentic", "point": 2 },
+        "2": { "type": "saving", "point": 2 },
+        "3": { "type": "risk", "point": 1 }
       }
     }
   },
   "4": {
-    "question": "Might I inquire, what method of transportation do you prefer?",
+    "question": "In your esteemed opinion, how would you prefer to immerse yourself in a new urban setting?",
     "option_1": {
-      "answer": "Save money, we have strong legs! Let’s take public transportation and walk.",
+      "answer": "Save money, we have strong legs! Walking and buses help me see the city like a local.",
       "calculation": {
         "1": { "type": "energetic", "point": 1 },
-        "2": { "type": "saver", "point": 2 }
+        "2": { "type": "saving", "point": 2 },
+        "3": { "type": "authentic", "point": 1 }
       }
     },
     "option_2": {
-      "answer": "Save time and energy. I am willing to spend more money on taxi for a relaxing experience.",
+      "answer": "Save time and energy. I am willing to spend more money on taxi and private tours for a relaxing exploration.",
       "calculation": {
         "1": { "type": "relaxed", "point": 1 },
-        "2": { "type": "spender", "point": 2 }
+        "2": { "type": "spending", "point": 2 },
+        "3": { "type": "modern", "point": 1 }
       }
     }
   },
   "5": {
-    "question": "For what noble purpose do you embark on this journey, sir/madam?",
+    "question": "For what noble purpose do you embark on this journey, my dear?",
     "option_1": {
       "answer": "Shop and buy and purchase. List out the MUST-BUY things in this country.",
       "calculation": {
-        "1": { "type": "urbanite", "point": 1 },
-        "2": { "type": "spender", "point": 2 }
+        "1": { "type": "modern", "point": 2 },
+        "2": { "type": "spending", "point": 2 }
       }
     },
     "option_2": {
-      "answer": "Visit all the landmarks. You can just buy most of the stuff via online shopping.",
+      "answer": "Visit all the landmarks. In this internet-developed generation, you can get all the stuff via online shopping.",
       "calculation": {
-        "1": { "type": "naturalist", "point": 1 },
-        "2": { "type": "saver", "point": 2 }
+        "1": { "type": "saving", "point": 1 },
+        "2": { "type": "authentic", "point": 1 }
       }
     }
   },
   "6": {
-    "question": "When it comes to your journeys, do you prefer to follow your heart in the moment or meticulously plan ahead for efficiency?",
+    "question": "Dear sir/madam, when it comes to your journeys, do you prefer to follow your heart in the moment or meticulously plan ahead for efficiency?",
     "option_1": {
       "answer": "My legs follow my heart. I would decide what to do depending on what I want to do at that moment.",
       "calculation": {
         "1": { "type": "spontaneous", "point": 2 },
-        "2": { "type": "energetic", "point": 1 }
+        "2": { "type": "energetic", "point": 1 },
+        "3": { "type": "risk", "point": 1 }
       }
     },
     "option_2": {
       "answer": "No plan, no action. I would plan everything ahead and strictly follow it to increase efficiency.",
       "calculation": {
         "1": { "type": "planned", "point": 2 },
-        "2": { "type": "relaxed", "point": 1 }
+        "2": { "type": "cautious", "point": 1 }
       }
     }
   },
@@ -107,7 +113,7 @@
       "answer": "Rise and shine! I love starting my day early with a packed schedule to make the most of every moment.",
       "calculation": {
         "1": { "type": "energetic", "point": 2 },
-        "2": { "type": "planned", "point": 1 }
+        "2": { "type": "planned", "point": 2 }
       }
     },
     "option_2": {
@@ -123,15 +129,15 @@
     "option_1": {
       "answer": "Budget-friendly all the way. Hostels or Airbnb give me the local vibe without breaking the bank.",
       "calculation": {
-        "1": { "type": "saver", "point": 2 },
-        "2": { "type": "spontaneous", "point": 1 }
+        "1": { "type": "saving", "point": 2 },
+        "2": { "type": "authentic", "point": 2 }
       }
     },
     "option_2": {
-      "answer": "Luxury is key. I prefer staying in high-end hotels or resorts for a comfortable and pampered experience.",
+      "answer": "Luxury is key. I prefer staying in boutique hotels or resorts for a comfortable and pampered experience.",
       "calculation": {
-        "1": { "type": "spender", "point": 2 },
-        "2": { "type": "planned", "point": 1 }
+        "1": { "type": "spending", "point": 2 },
+        "2": { "type": "modern", "point": 2 }
       }
     }
   },
@@ -141,133 +147,121 @@
       "answer": "Go with the flow! I adapt quickly and find new plans to keep the adventure going.",
       "calculation": {
         "1": { "type": "spontaneous", "point": 2 },
-        "2": { "type": "energetic", "point": 1 }
+        "2": { "type": "risk", "point": 1 }
       }
     },
     "option_2": {
       "answer": "Stick to the script. I try to follow the original plan as closely as possible to avoid disruptions.",
       "calculation": {
         "1": { "type": "planned", "point": 2 },
-        "2": { "type": "relaxed", "point": 1 }
+        "2": { "type": "cautious", "point": 1 }
       }
     }
   },
   "10": {
-    "question": "May I humbly inquire, what kind of souvenirs do you wish to procure on your journeys?",
-    "option_1": {
-      "answer": "Unique treasures! I love finding locally made items that capture the essence of the place.",
-      "calculation": {
-        "1": { "type": "naturalist", "point": 1 },
-        "2": { "type": "saver", "point": 2 }
-      }
-    },
-    "option_2": {
-      "answer": "High-end keepsakes. I prefer branded or luxurious products that remind me of my travels.",
-      "calculation": {
-        "1": { "type": "urbanite", "point": 1 },
-        "2": { "type": "spender", "point": 2 }
-      }
-    }
-  },
-  "11": {
-    "question": "In your esteemed opinion, how would you prefer to immerse yourself in a new urban setting?",
-    "option_1": {
-      "answer": "On foot and by public transport. Walking tours and buses help me see the urbanite like a local.",
-      "calculation": {
-        "1": { "type": "energetic", "point": 1 },
-        "2": { "type": "saver", "point": 2 }
-      }
-    },
-    "option_2": {
-      "answer": "Comfort and convenience. Private tours and taxis are my go-to for a relaxed exploration.",
-      "calculation": {
-        "1": { "type": "relaxed", "point": 1 },
-        "2": { "type": "spender", "point": 2 }
-      }
-    }
-  },
-  "12": {
-    "question": "Might I ask, what is your esteemed approach to dining whilst traversing the world?",
-    "option_1": {
-      "answer": "Street food adventure! I love trying local eateries and street vendors for authentic flavors.",
-      "calculation": {
-        "1": { "type": "naturalist", "point": 1 },
-        "2": { "type": "saver", "point": 2 }
-      }
-    },
-    "option_2": {
-      "answer": "Gourmet experiences. Fine dining and renowned restaurants are a must for me.",
-      "calculation": {
-        "1": { "type": "urbanite", "point": 1 },
-        "2": { "type": "spender", "point": 2 }
-      }
-    }
-  },
-  "13": {
     "question": "As the night falls, how does your grace prefer to courtesy the evenings during your travels?",
     "option_1": {
       "answer": "Nightlife explorer. I enjoy checking out the local entertainment and vibrant nightlife.",
       "calculation": {
         "1": { "type": "energetic", "point": 2 },
-        "2": { "type": "urbanite", "point": 1 }
+        "2": { "type": "modern", "point": 1 }
       }
     },
     "option_2": {
       "answer": "Quiet evenings. I prefer relaxing at the hotel or finding a peaceful spot to unwind.",
       "calculation": {
         "1": { "type": "relaxed", "point": 2 },
-        "2": { "type": "naturalist", "point": 1 }
+        "2": { "type": "authentic", "point": 1 },
+        "3": { "type": "cautious", "point": 1 }
       }
     }
   },
-  "14": {
+  "11": {
     "question": "Regarding matters of security and comfort, what are your sentiments towards travel insurance, my sir/madam?",
     "option_1": {
       "answer": "A must-have! Travel insurance is essential for peace of mind on every trip.",
       "calculation": {
         "1": { "type": "planned", "point": 2 },
-        "2": { "type": "saver", "point": 1 }
+        "2": { "type": "saving", "point": 1 },
+        "3": { "type": "cautious", "point": 2 }
       }
     },
     "option_2": {
       "answer": "Not for me. I see it as an unnecessary expense and prefer to take my chances.",
       "calculation": {
         "1": { "type": "spontaneous", "point": 2 },
-        "2": { "type": "spender", "point": 1 }
+        "2": { "type": "spending", "point": 1 },
+        "3": { "type": "risk", "point": 2 }
       }
     }
   },
-  "15": {
+  "12": {
     "question": "In your wisdom, what meticulous method guides your packing rituals for each sojourn?",
     "option_1": {
       "answer": "Travel light. I pack only the essentials to keep things simple and easy.",
       "calculation": {
-        "1": { "type": "naturalist", "point": 1 },
-        "2": { "type": "saver", "point": 2 }
+        "1": { "type": "spontaneous", "point": 1 },
+        "2": { "type": "risk", "point": 1 }
       }
     },
     "option_2": {
       "answer": "Be prepared! I pack for every possible scenario to ensure I'm ready for anything.",
       "calculation": {
-        "1": { "type": "urbanite", "point": 1 },
-        "2": { "type": "spender", "point": 2 }
+        "1": { "type": "planned", "point": 1 },
+        "2": { "type": "cautious", "point": 1 }
       }
     }
   },
-  "16": {
+  "13": {
     "question": "When encountering the local populace, how does your majesty choose to engage with grace and charm?",
     "option_1": {
-      "answer": "Cultural immersion! I love engaging in conversations and learning about the local culture.",
+      "answer": "I love engaging in conversations and learning about the local culture.",
       "calculation": {
-        "1": { "type": "naturalist", "point": 1 },
-        "2": { "type": "energetic", "point": 2 }
+        "1": { "type": "energetic", "point": 1 },
+        "2": { "type": "authentic", "point": 1 },
+        "3": { "type": "risk", "point": 1 }
       }
     },
     "option_2": {
       "answer": "Keep it minimal. I focus on my own experience and keep interactions with locals to a minimum.",
       "calculation": {
-        "1": { "type": "urbanite", "point": 1 },
-        "2": { "type": "relaxed", "point": 2 }
+        "1": { "type": "relaxed", "point": 1 },
+        "2": { "type": "modern", "point": 1 },
+        "3": { "type": "cautious", "point": 1 }
+      }
+    }
+  },
+  "14": {
+    "question": "Dear sir/madam, in matters of exploration, how does your esteemed self perceive the significance of off-the-beaten-path destinations?",
+    "option_1": {
+      "answer": "Thrill of the unknown! I seek out hidden gems and unexplored territories to enrich my travel experiences.",
+      "calculation": {
+        "1": { "type": "risk", "point": 2 },
+        "2": { "type": "authentic", "point": 2 }
+      }
+    },
+    "option_2": {
+      "answer": "Stick to the classics. I prefer well-known attractions and popular destinations for a familiar and comfortable journey.",
+      "calculation": {
+        "1": { "type": "cautious", "point": 2 },
+        "2": { "type": "modern", "point": 2 }
+      }
+    }
+  },
+  "15": {
+    "question": "In the realm of cultural exploration, how does your distinguished self prefer to unravel the tapestry of local traditions and customs?",
+    "option_1": {
+      "answer": "Immerse in traditions! I seek out cultural festivals and hands-on experiences to deeply connect with the heritage of the destination.",
+      "calculation": {
+        "1": { "type": "authentic", "point": 2 },
+        "2": { "type": "risk", "point": 1 }
+      }
+    },
+    "option_2": {
+      "answer": "Appreciate from afar. I enjoy visiting museums and historical sites to gain insights into the culture without fully participating.",
+      "calculation": {
+        "1": { "type": "modern", "point": 1 },
+        "2": { "type": "cautious", "point": 1 }
       }
     }
   }

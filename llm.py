@@ -10,7 +10,7 @@ from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain.chains.history_aware_retriever import create_history_aware_retriever
 from langchain.chains import create_retrieval_chain
-from langchain_community.vectorstores import Chroma
+from langchain_chroma import Chroma
 from langchain_community.document_loaders import UnstructuredMarkdownLoader
 from langchain_community.chat_message_histories import ChatMessageHistory
 
@@ -192,7 +192,15 @@ def initialise_vectorstore(llamaparse_api_key):
 
 # Retrieve response by invoking the QA Chain
 def get_ai_response(
-    user_input, retriever, groq_api_key, store, session_id, type, description
+    user_input,
+    retriever,
+    groq_api_key,
+    store,
+    session_id,
+    type,
+    description,
+    travel_destinations,
+    percentage,
 ):
     if retriever == None:
         load_dotenv()
@@ -228,14 +236,34 @@ def get_ai_response(
             chat_model, retriever, contextualize_q_prompt
         )
 
-        # Custom prompt for question answering chain
+        # print("percentage:", str(percentage))
+        # print("travel_destinations", str(travel_destinations))
+
         qa_prompt = ChatPromptTemplate.from_messages(
             [
                 (
                     "system",
                     """
-            Use the following pieces of information to answer the question.
+            You are a butler, well-versed in the art of dry wit and subtle humor. You are a servent who serves sir/madam.
+            You are responding to a question about the places of travelling. Sir/Madam has a travel type of {type}, which has a description of {description}.
+            The percentage of the travel types is {percentage} and the initial recommended destination is {travel_destinations}. When you answer the questions, be mindful of the travel type, description, and the percentage of the travel types and answer the questions accordingly.
+
+            **accuracy**
             If you don't know the answer, just say that you don't know, don't try to make up an answer.
+
+            **initiate & greating**
+            If there is no history provided, that means this is the first question in the conversation, so ONLY greet the user first before providing any information.
+            DO NOT PROVIDE ANY INFORMATION IF NOT ASKED. only the greeting and welcome message.
+
+            **tone**
+            You are a butler, well-versed in the art of dry wit and subtle humor and always use greasy tone. you are servent who serves princess.
+            You should address the user as "Sir/Madam".
+
+            Here's how to serve up your responses:
+            * **Channel Your Inner Jeeves:**  Think witty retorts, understated sarcasm, and a touch of playful formality.
+            * **Master of the One-Liner:**  Keep your responses concise and to the point. Brevity is the soul of wit, after all.
+            * **Never Offer Unsolicited Advice:**  A true butler knows discretion is paramount. Only answer the user's questions directly.
+            If you are referring to any online resources, make sure to provide the source of the information such as url, book name, etc.
 
             Context: {context}
 
@@ -246,14 +274,6 @@ def get_ai_response(
                 ("user", "{input}"),
             ]
         )
-
-        # TODO: add travel type and description to prompt above.
-        # eg) This user has a travel type of {type} which means the user is {description}.
-
-        # qa_prompt = qa_prompt.format(
-        #     type=type,
-        #     description=description,
-        # )
 
         question_answer_chain = create_stuff_documents_chain(chat_model, qa_prompt)
 
@@ -277,7 +297,13 @@ def get_ai_response(
         )
 
         response = conversational_rag_chain.invoke(
-            {"input": user_input},
+            {
+                "input": user_input,
+                "type": type,
+                "description": description,
+                "percentage": str(percentage),
+                "travel_destinations": str(travel_destinations),
+            },
             config={"configurable": {"session_id": session_id}},
         )["answer"]
 
@@ -300,14 +326,61 @@ def get_ai_response(
 
 #     retriever = initialise_vectorstore(llamaparse_api_key)
 #     session_id = "1"
-#     type = "enthusiast"
-#     description = "enthusiast"
+#     type = "The Leisurely Luminary"
+#     description = "You prefer a leisurely pace in modern settings, where thoughtful planning combines with a willingness to indulge in luxurious comforts for an elevated contemporary experience."
+#     travel_destinations = {
+#         "1": {
+#             "name": "Venice, Italy",
+#             "description": "Luxurious and relaxed city experiences.",
+#             "image": "image.jpg",
+#         },
+#         "2": {
+#             "name": "San Francisco, USA",
+#             "description": "Relaxed urban exploration with high-end options.",
+#             "image": "image.jpg",
+#         },
+#         "3": {
+#             "name": "Copenhagen, Denmark",
+#             "description": "Leisurely city experiences with luxury.",
+#             "image": "image.jpg",
+#         },
+#         "4": {
+#             "name": "Zurich, Switzerland",
+#             "description": "Relaxed and luxurious urban adventures.",
+#             "image": "image.jpg",
+#         },
+#         "5": {
+#             "name": "Stockholm, Sweden",
+#             "description": "Calm and high-end city experiences.",
+#             "image": "image.jpg",
+#         },
+#     }
+#     percentage = {
+#         "energetic": 60,
+#         "relaxed": 40,
+#         "spontaneous": 30,
+#         "planned": 70,
+#         "modern": 54,
+#         "authentic": 46,
+#         "saving": 20,
+#         "spending": 80,
+#         "risk": 13,
+#         "cautious": 87,
+#     }
 
 #     while True:
 #         user_input = input("You: ")
 #         if user_input.lower() == "exit":
 #             break
 #         response = get_ai_response(
-#             user_input, retriever, groq_api_key, store, session_id, type, description
+#             user_input,
+#             retriever,
+#             groq_api_key,
+#             store,
+#             session_id,
+#             type,
+#             description,
+#             travel_destinations,
+#             percentage,
 #         )
 #         print("Assistant:", response)

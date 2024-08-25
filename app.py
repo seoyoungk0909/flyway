@@ -43,7 +43,7 @@ def result():
 
 @app.route("/result_page")
 def result_page():
-    travel_type = session.get("travel_type", [])
+    travel_type = session.get("travel_type", "")
     percentage = session.get("percentage", [None, None, None, None])
     return render_template(
         "result.html", travel_type=travel_type, percentage=percentage
@@ -61,6 +61,14 @@ def initialise_llm():
     return jsonify({"status": "initialized"})
 
 
+@app.route("/result_to_llm", methods=["POST"])
+def result_to_llm():
+    data = request.get_json()
+    session["name"] = data.get("name")
+    session["description"] = data.get("description")
+    session["travel_destinations"] = data.get("travel_destinations")
+
+
 @app.route("/chat")
 def chat():
     return render_template("chat.html")
@@ -75,10 +83,30 @@ def get_response():
         return jsonify({"error": "LLM not initialized"}), 500
     session_id = session.get("id", "")
     # TODO: PASS travel type and description
+    name = session.get("name", "")
+    description = session.get("description", "")
+    travel_destinations = session.get("travel_destinations", {})
+    percentage = session.get(
+        "percentage", [None, None, None, None, None, None, None, None, None, None]
+    )
+
     ai_response = get_ai_response(
-        user_input, retriever, groq_api_key, chat_history_store, session_id, "", ""
+        user_input,
+        retriever,
+        groq_api_key,
+        chat_history_store,
+        session_id,
+        name,
+        description,
+        travel_destinations,
+        percentage,
     )
     return jsonify({"user_input": user_input, "ai_response": ai_response})
+
+
+@app.route("/travel_types")
+def travel_types():
+    return render_template("travel_types.html")
 
 
 if __name__ == "__main__":

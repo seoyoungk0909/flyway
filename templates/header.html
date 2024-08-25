@@ -1,14 +1,7 @@
 <!-- header.html -->
 <nav class="navbar navbar-expand-lg navbar-light custom-navbar">
-  <button
-    class="navbar-toggler"
-    type="button"
-    data-toggle="collapse"
-    data-target="#navbarNav"
-    aria-controls="navbarNav"
-    aria-expanded="false"
-    aria-label="Toggle navigation"
-  >
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
+    aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarNav">
@@ -17,24 +10,27 @@
         <a class="nav-link" href="/" data-i18n="nav_home"></a>
         <span class="sr-only">(current)</span>
       </li>
-      <li class="nav-item">
+      <!-- <li class="nav-item">
         <a class="nav-link" href="/" data-i18n="nav_about_us"></a>
+      </li> -->
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          href="/travel_types"
+          data-i18n="nav_travel_types"
+        ></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/" data-i18n="nav_travel_types"></a>
+        <a class="nav-link" href="/type_test" data-i18n="nav_type_test"></a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="/chat" data-i18n="nav_chat"></a>
       </li>
       <li class="nav-item">
         <p class="small">
-          <a class="nav-link-small" href="#" onclick="changeLanguage('en')"
-            >English</a
-          >
+          <a class="nav-link-small" href="#" onclick="changeLanguage('en')">English</a>
           |
-          <a class="nav-link-small" href="#" onclick="changeLanguage('kr')"
-            >한국어</a
-          >
+          <a class="nav-link-small" href="#" onclick="changeLanguage('kr')">한국어</a>
         </p>
       </li>
     </ul>
