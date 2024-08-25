@@ -32,6 +32,11 @@
             document.getElementById("splash-screen").classList.add("hidden");
             document.getElementById("chat-content").style.display = "block";
           });
+        const initialMessage = document.createElement("div");
+        initialMessage.classList.add("chat-bubble", "assistant");
+        initialMessage.textContent =
+          "My dearly Sir/Madam, it's a pleasure to serve you. How may I assist you today?";
+        document.getElementById("chat-box").appendChild(initialMessage);
       });
 
       function isValidUrl(string) {
@@ -43,18 +48,18 @@
         }
       }
 
-      const typeTestCompleted = localStorage.getItem('result')
+      const typeTestCompleted = localStorage.getItem("result");
       // let typeTestCompleted = true;
 
       function sendMessage() {
-
         // Check if the type test is completed before sending the message
         if (!typeTestCompleted) {
-          alert("You have not finished the type test, please finish the travel type test first");
-          window.location.href = '/type_test';
+          alert(
+            "You have not finished the type test, please finish the travel type test first"
+          );
+          window.location.href = "/type_test";
           return;
         }
-
 
         const userInput = document.getElementById("user-input").value;
         if (!userInput) return;
@@ -68,7 +73,8 @@
 
         const loadingMessage = document.createElement("div");
         loadingMessage.classList.add("chat-bubble", "assistant");
-        loadingMessage.textContent = "My dearly Sir/Madam, Wait I am thinking ...❤️‍🔥";
+        loadingMessage.textContent =
+          "My dearly Sir/Madam, please allow me to think...";
         chatBox.appendChild(loadingMessage);
 
         chatBox.scrollTop = chatBox.scrollHeight;
