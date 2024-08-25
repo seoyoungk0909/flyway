@@ -1,48 +1,215 @@
 {% extends 'base.html' %} {% block body %}
 <div class="result-container">
-    <h2>Your Personality Test Result</h2>
-    <h3 id="personality-type">Your type is:</h3>
-    <p id="personality-description"> Personality description: </p>
-    <p id="percentages-list"> Percentage list: <br></p>
-    <a href="/chat" class="btn btn-primary">Chat</a>
+    <div class="container-background-result">
+        <h2>Your Personality Test Result</h2>
+        <h3 id="personality-type">Your type is:</h3>
+        <p id="personality-description"> Personality description: </p>
+        <p id="recommendation-places"> Recommendation desitination: </p>
+        <p id="percentages-list"> Percentage list: <br></p>
+        <a href="/chat" class="btn btn-primary">Chat</a>
+    </div>
 </div>
+   
+
 <script>
+    localStorage.setItem('result', true)
     var travel_type = JSON.parse('{{ travel_type | tojson | safe}}');
     var percentage = JSON.parse('{{ percentage | tojson | safe}}');
-    console.log(travel_type);
+    var description = "";
+
+    console.log(travel_type); // EONA
     console.log(percentage);
+    // percentage:
+    //     [["energetic", 100],
+    //     ["relaxed", 0], 
+    //     ["planned", 44], 
+    //     ["spontaneous", 56], 
+    //     ["urbanite", 50], 
+    //     ["naturalist", 50], 
+    //     ["saver", 68], 
+    //     ["spender", 32]]
 
-    // 1. TODO: load the result.json file so that we can show name, descrption, and recommended destinations
-            // find online how to load json to javascript, or refer to the code in type_test.html where questions.json is loaded
-    // 2. TODO: Show the name of the type and remove the letters
-    document.getElementById("personality-type").innerText = `Your type is: ${travel_type}`;
 
-    const typeNameMapping = {
-        energetic: "Energetic",
-        relaxed: "Relaxed",
-        planned: "Planned",
-        spontaneous: "Spontaneous",
-        urbanite: "Urbanite",
-        naturalist: "Naturalist",
-        saver: "Saver",
-        spender: "Spender"
-    };
+    const type_header = document.getElementById("personality-type");
+    type_header.textContent += travel_type;
 
-    const percentagesList = document.getElementById("percentages-list");
-    let percentagesHTML = '';
-    for (let i = 0; i < percentage.length; i+=2) {
-        const type1 = percentage[i][0];
-        const percent1 = percentage[i][1];
-        const type2 = percentage[i + 1][0];
-        const percent2 = percentage[i + 1][1];
+    document.addEventListener("DOMContentLoaded", function () {
+        fetch("/static/data/travel_type/results.json")
+            .then((response) => response.json())
+            .then((data) => {
+                description = data[travel_type]['description'];
+                travel_destinations = data[travel_type]['travel_destinations'];
 
-        percentagesHTML += `<li>${typeNameMapping[type1]}: ${percent1}%, ${typeNameMapping[type2]}: ${percent2}%</li>`;
+
+                // percentage = data[travel_type]['percentage'];
+                displayResult(description, travel_destinations, percentage);
+            })
+            .catch((error) => console.error("Error fetching JSON data:", error));
+    });
+
+    function displayResult(description, travel_destinations, percentage) {
+        const type_description = document.getElementById("personality-description");
+        type_description.textContent += description;
+        console.log(description);
+
+
+        const recommendationPlacesList = document.getElementById("recommendation-places");
+
+        // Loop through the travel_destinations object
+        for (const destinationId in travel_destinations) {
+            const destination = travel_destinations[destinationId];
+            const listItem = document.createElement("li");
+            listItem.textContent = `${destination.name} - ${destination.description}`;
+            recommendationPlacesList.appendChild(listItem);
+        }
+        displayPercentage(percentage);
+
     }
-    percentagesList.innerHTML += `<ul>${percentagesHTML}</ul>`;
+    function displayPercentage(percentage) {
 
-    // 3. TODO: Show decription of corresponding type
+        const typeNameMapping = {
+            energetic: "Energetic",
+            relaxed: "Relaxed",
+            planned: "Planned",
+            spontaneous: "Spontaneous",
+            urbanite: "Urbanite",
+            naturalist: "Naturalist",
+            saver: "Saver",
+            spender: "Spender"
+        };
+
+        const percentagesList = document.getElementById("percentages-list");
+        let percentagesHTML = '';
+
+        for (let i = 0; i < percentage.length; i += 2) {
+            const type1 = percentage[i][0];
+            const percent1 = percentage[i][1];
+            const type2 = percentage[i + 1][0];
+            const percent2 = percentage[i + 1][1];
+
+            // Compare percentages and display only the letter with the higher percentage
+            if (percent1 > percent2) {
+                percentagesHTML += `<li>${typeNameMapping[type1]}</li>`;
+            } else if (percent2 > percent1) {
+                percentagesHTML += `<li>${typeNameMapping[type2]}</li>`;
+            } else {
+                // Handle ties (if needed) - you could display both letters or a special message
+                percentagesHTML += `<li>${typeNameMapping[type1]}/${typeNameMapping[type2]}</li>`;
+            }
+        }
+        percentagesList.innerHTML += `<ul>${percentagesHTML}</ul>`;
+
+    }
+
+
+
     // 4. TODO: Send the name of the type and description to the chatbot
-    </script>
+    
+
+
+
+    //여기서 해서 되야되는데, 안되서, script파일에서 하자
+
+
+
+
+    //    document.addEventListener("DOMContentLoaded", function () {
+    //        fetch("/static/data/travel_type/result.json")
+    //            .then((response) => response.json())
+    //            .then((data) => {
+    //                const data = document.getElementById("data");
+
+
+    //                // Create HTML elements to display the JSON data
+    //                const nameElement = document.createElement("p");
+    //                nameElement.textContent = "Name: " + result.description;
+
+
+    //                const ageElement = document.createElement("p");
+    //                ageElement.textContent = "Age: " + data.age;
+
+
+    //                const cityElement = document.createElement("p");
+    //                cityElement.textContent = "City: " + data.city;
+
+
+    //                // Append the elements to the "descriptionData" div
+    //                descriptionData.appendChild(nameElement);
+    //                descriptionData.appendChild(ageElement);
+    //                descriptionData.appendChild(cityElement);
+    //            })
+    //            .catch((error) => console.error("Error fetching JSON data:", error));
+    //    });
+
+
+    // var travel_type = JSON.parse('{{ travel_type | tojson | safe}}');
+    // var percentage = JSON.parse('{{ percentage | tojson | safe}}');
+    // console.log(travel_type);
+    // console.log(percentage);
+
+
+
+
+    // // Fetch types from result.json
+    // document.addEventListener("DOMContentLoaded", function () {
+    //     fetch("/static/data/travel_type/result.json")
+    //         .then((response) => {
+    //             if (!response.ok) {
+    //                 throw new Error("Network response was not ok " + response.statusText);
+    //             }
+    //             return response.json();
+    //         })
+    //         .then((data) => {
+    //             console.log(percentage);
+    //             displayType(data);
+    //         })
+    //         .catch((error) => console.error("Error fetching JSON data:", error));
+    // });
+
+
+
+
+    // function displayType(data) {
+    //     const personalityData = data[travel_type];
+    //     document.getElementById("personality-type").innerText = `Your type is: ${personalityData.name}`;
+    //     document.getElementById("personality-description").innerText = `Personality description: ${personalityData.description}`;
+
+
+    //     const destinationsList = document.getElementById("destinations-list");
+    //     let destinationsHTML = "";
+
+
+    //     for (const destinationId in personalityData.travel_destinations) {
+    //         const destination = personalityData.travel_destinations[destinationId];
+    //         destinationsHTML += `<li>${destination.name} - ${destination.description}</li>`;
+    //     }
+
+
+    //     destinationsList.innerHTML = destinationsHTML;
+    // }
+
+
+
+
+
+
+    // document.getElementById("personality-type").innerText = `Your type is: ${travel_type}`;
+
+
+
+
+
+</script>
+
+
+
+
+
+
+
 </body>
+
+
+
 
 {% endblock %}
