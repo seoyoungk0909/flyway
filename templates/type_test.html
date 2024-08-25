@@ -1,37 +1,35 @@
 {% extends 'base.html' %} {% block body %}
 <div class="question-background">
   <div>
+    </div>
+    <div id="questionContainer">
+      <!-- Questions will be inserted here by JavaScript -->
+    </div>
+    <div class="mt-3">
+    </div>
   </div>
-  <div id="">
-    <!-- Questions will be inserted here by JavaScript -->
-  </div>
-  <div class="mt-3">
-    <!-- <button id="prevBtn" class="btn btn-primary" onclick="prevQuestion()">
-        Previous
-      </button>
-      <button id="nextBtn" class="btn btn-primary" onclick="nextQuestion()">
-        Next
-      </button> -->
-  </div>
-</div>
 
-<script>
-  let currentStart = 0;
-  const questionsPerPage = 1;
-  let questions = [];
-  let answers = new Array(questions.length).fill(null);
-  let calculations = {
-    energetic: 0,
-    relaxed: 0,
-    planned: 0,
-    spontaneous: 0,
-    urbanite: 0,
-    naturalist: 0,
-    saver: 0,
-    spender: 0,
-  };
-  let percentage = [];
-  let travel_type = "";
+  <script>
+    let currentStart = 0;
+    const questionsPerPage = 1;
+    let questions = [];
+    let answers = new Array(questions.length).fill(null);
+    let calculations = {
+      energetic: 0,
+      relaxed: 0,
+      spontaneous: 0,
+      planned: 0,
+      modern: 0,
+      authentic: 0,
+      saving: 0,
+      spending: 0,
+      risk: 0,
+      cautious: 0,
+    };
+
+    let percentage = [];
+    let travel_type = "";
+    let progress = 0;
 
   let userPreferredLanguage = localStorage.getItem("language") || "en";
 
@@ -76,11 +74,13 @@
     return questionsArray;
   }
 
-  function displayQuestion() {
-    const start =
-      Math.floor(currentStart / questionsPerPage) * questionsPerPage;
-    const end = Math.min(start + questionsPerPage, questions.length);
-    let questionsHTML = "";
+    function displayQuestion() {
+      const start =
+        Math.floor(currentStart / questionsPerPage) * questionsPerPage;
+      const end = Math.min(start + questionsPerPage, questions.length);
+      let questionsHTML = "";
+      // console.log("current question:", start);
+      // console.log("current progress", progress);
 
     for (let i = start; i < end; i++) {
       const q = questions[i];
@@ -107,55 +107,57 @@
     `;
 
 
-    document.getElementById("questionContainer").innerHTML = questionsHTML;
-    document.getElementById("prevBtn").style.display =
-      start === 0 ? "none" : "inline-block";
-    document.getElementById("nextBtn").innerHTML =
-      end === questions.length ? "See Result" : '<i class="fa-solid fa-arrow-right"></i>';
-  }
+      document.getElementById("questionContainer").innerHTML = questionsHTML;
+      document.getElementById("prevBtn").style.display =
+        start === 0 ? "none" : "inline-block";
+      document.getElementById("nextBtn").innerHTML =
+        end === questions.length ? "See Result" : '<i class="fa-solid fa-arrow-right"></i>';
+        updateBackgroundImage();
+
+      }
 
   function selectAnswer(questionIndex, optionIndex) {
     answers[questionIndex] = optionIndex;
     displayQuestion(); // Re-render the questions to update button styles
   }
 
-  function calculatePoints() {
-    // Reset calculations
-    for (let key in calculations) {
-      calculations[key] = 0;
-    }
+    function calculatePoints() {
+      // Reset calculations
+      for (let key in calculations) {
+        calculations[key] = 0;
+      }
 
-    answers.forEach((optionIndex, questionIndex) => {
-      if (optionIndex !== null) {
-        const selectedOptionCalculations =
-          questions[questionIndex].calculations[optionIndex];
-        for (const key in selectedOptionCalculations) {
-          if (selectedOptionCalculations.hasOwnProperty(key)) {
-            const calc = selectedOptionCalculations[key];
-            calculations[calc.type] += calc.point;
+      answers.forEach((optionIndex, questionIndex) => {
+        if (optionIndex !== null) {
+          const selectedOptionCalculations =
+            questions[questionIndex].calculations[optionIndex];
+          for (const key in selectedOptionCalculations) {
+            if (selectedOptionCalculations.hasOwnProperty(key)) {
+              const calc = selectedOptionCalculations[key];
+              calculations[calc.type] += calc.point;
+            }
           }
         }
-      }
-    });
-  }
+      });
+    }
 
   // Helper function to calculate percentage of target value between two values
   function calculatePercentage(target, other) {
     return (target / (target + other)) * 100;
   }
 
-  function calculatePercentageAndType() {
-    // TODO: Better error handling (when both percentage is 0)
-    let letterMapping = {
-      energetic: "E",
-      relaxed: "R",
-      planned: "P",
-      spontaneous: "O",
-      urbanite: "U",
-      naturalist: "N",
-      saver: "A",
-      spender: "S",
-    };
+    function calculatePercentageAndType() {
+      // TODO: Better error handling (when both percentage is 0)
+      let letterMapping = {
+        energetic: "E",
+        relaxed: "R",
+        spontaneous: "O",
+        planned: "P",
+        modern: "U",
+        authentic: "N",
+        saving: "A",
+        spending: "S",
+      };
 
     let keys = Object.keys(calculations);
 
@@ -165,17 +167,15 @@
       let type = "";
       let letter = "";
 
-      // calculate percentage for first type, round to integer
-      percent1 = Math.round(
-        (calculations[keys[i]] /
-          (calculations[keys[i]] + calculations[keys[i + 1]])) *
-        100
-      );
-
-      // calculate percent for the corresponding type
-      if (percent1 != null) {
-        percent2 = 100 - percent1;
-      }
+        // calculate percentage for first type, round to integer
+        let base = calculations[keys[i]] + calculations[keys[i + 1]];
+        if (base === 0) {
+          percent1 = 0;
+          percent2 = 0;
+        } else {
+          percent1 = Math.round(calculations[keys[i]] / base * 100);
+          percent2 = 100 - percent1;
+        }
 
       // determine which type is greater
       type = percent1 > percent2 ? keys[i] : keys[i + 1];
@@ -184,36 +184,37 @@
       letter = letterMapping[type] || "";
       travel_type += letter;
 
-      percentage.push([keys[i], percent1], [keys[i + 1], percent2]);
-    }
-    // console.log("travel_type: ", travel_type);
-    // console.log("percentage: ", percentage);
-  }
+        percentage.push([keys[i], percent1], [keys[i + 1], percent2]);
+      }
 
-  function submitAnswers() {
-    calculatePoints();
-    calculatePercentageAndType();
-    fetch("/result", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        answers: answers,
-        travel_type: travel_type,
-        percentage: percentage,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.redirect) {
-          window.location.href = data.redirect;
-        }
+      console.log("travel_type: ", travel_type);
+      console.log("percentage: ", percentage);
+    }
+
+    function submitAnswers() {
+      calculatePoints();
+      calculatePercentageAndType();
+      fetch("/result", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          answers: answers,
+          travel_type: travel_type,
+          percentage: percentage,
+        }),
       })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-  }
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.redirect) {
+            window.location.href = data.redirect;
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    }
 
   function nextQuestion() {
     const start =
@@ -225,26 +226,34 @@
       return;
     }
 
-    if (end < questions.length - 1) {
-      currentStart += questionsPerPage;
-      displayQuestion();
-    } else {
-      submitAnswers();
+      if (end < questions.length) {
+        currentStart += questionsPerPage;
+        displayQuestion();
+      } else {
+        submitAnswers();
+      }
+
+      // Update progress bar
+      progress = (currentStart / questions.length) * 100;
+    }
+    function prevQuestion() {
+      if (currentStart > 0) {
+        currentStart -= questionsPerPage;
+        displayQuestion();
+      }
     }
 
-    // Update progress bar
-    const progress = (currentStart / questions.length) * 100;
-    // document
-    //   .getElementById("progressBar")
-    //   .setAttribute("aria-valuenow", progress);
-    // document.getElementById("progressBar").style.width = `${progress}%`;
-  }
-  function prevQuestion() {
-    if (currentStart > 0) {
-      currentStart -= questionsPerPage;
-      displayQuestion();
+    function updateBackgroundImage() {
+      const questionIndex = Math.floor(currentStart / questionsPerPage);
+      let backgroundImage = "url('/static/style/svg/question-background.svg')";
+      if (questionIndex > 7) {
+        const index = Math.min(questionIndex - 7, 8);
+        // console.log("index", index);
+        backgroundImage = `url('/static/style/svg/question-background-${index}.svg')`;
+      }
+      document.querySelector(".question-background").style.backgroundImage = backgroundImage;
     }
-  }
+
 
   window.onload = function () {
     displayQuestion();
