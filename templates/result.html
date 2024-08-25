@@ -6,12 +6,16 @@
     <p id="recommendation-places"> Recommendation desitination: </p>
     <p id="percentages-list"> Percentage list: <br></p>
     <a href="/chat" class="btn btn-primary">Chat</a>
+
 </div>
+   
 
 <script>
+    localStorage.setItem('result', true)
     var travel_type = JSON.parse('{{ travel_type | tojson | safe}}');
     var percentage = JSON.parse('{{ percentage | tojson | safe}}');
     var description = "";
+
     console.log(travel_type); // EONA
     console.log(percentage);
     // percentage:
@@ -34,6 +38,8 @@
             .then((data) => {
                 description = data[travel_type]['description'];
                 travel_destinations = data[travel_type]['travel_destinations'];
+
+
                 // percentage = data[travel_type]['percentage'];
                 displayResult(description, travel_destinations, percentage);
             })
@@ -93,6 +99,11 @@
         percentagesList.innerHTML += `<ul>${percentagesHTML}</ul>`;
 
     }
+
+
+
+    // 4. TODO: Send the name of the type and description to the chatbot
+    
 
 
 
@@ -188,7 +199,6 @@
 
 
 </script>
-
 
 
 

@@ -40,7 +40,19 @@
         }
       }
 
+      const typeTestCompleted = localStorage.getItem('result')
+      // let typeTestCompleted = true;
+
       function sendMessage() {
+
+        // Check if the type test is completed before sending the message
+        if (!typeTestCompleted) {
+          alert("You have not finished the type test, please finish the travel type test first");
+          window.location.href = '/type_test';
+          return;
+        }
+
+
         const userInput = document.getElementById("user-input").value;
         if (!userInput) return;
         document.getElementById("user-input").value = "";
@@ -93,6 +105,10 @@
             chatBox.appendChild(errorMessage);
             chatBox.scrollTop = chatBox.scrollHeight;
           });
+      }
+
+      function markTypeTestComplete() {
+        typeTestCompleted = true;
       }
 
       document
