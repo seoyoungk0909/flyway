@@ -1,0 +1,498 @@
+{
+  "EPUA": {
+    "name": "The Meticulous Modernist",
+    "description": "You excel in meticulous planning and thrive amidst the energy of modern environments, all while prudently managing your resources.",
+    "travel_destinations": {
+      "1": {
+        "name": "Tokyo, Japan",
+        "description": "Efficient public transport and budget-friendly options.",
+        "image": "image.jpg"
+      },
+      "2": {
+        "name": "Berlin, Germany",
+        "description": "Rich history, affordable museums, and well-organized city tours.",
+        "image": "image.jpg"
+      },
+      "3": {
+        "name": "Bangkok, Thailand",
+        "description": "Vibrant city life with numerous budget-friendly activities.",
+        "image": "image.jpg"
+      },
+      "4": {
+        "name": "Lisbon, Portugal",
+        "description": "Affordable urban experiences with detailed itineraries.",
+        "image": "image.jpg"
+      },
+      "5": {
+        "name": "Seoul, South Korea",
+        "description": "Well-planned city with plenty of budget-conscious options.",
+        "image": "image.jpg"
+      }
+    }
+  },
+  "EPUS": {
+    "name": "The Stylish Savant",
+    "description": "You savor meticulously curated modern adventures and willingly indulge in sophisticated experiences, appreciating the finer things in contemporary life.",
+    "travel_destinations": {
+      "1": {
+        "name": "Paris, France",
+        "description": "Luxurious experiences with meticulously planned itineraries.",
+        "image": "image.jpg"
+      },
+      "2": {
+        "name": "New York City, USA",
+        "description": "High-end dining, shopping, and entertainment.",
+        "image": "image.jpg"
+      },
+      "3": {
+        "name": "Dubai, UAE",
+        "description": "Opulent experiences in a well-organized urban setting.",
+        "image": "image.jpg"
+      },
+      "4": {
+        "name": "London, UK",
+        "description": "Luxury hotels and exclusive experiences in a planned manner.",
+        "image": "image.jpg"
+      },
+      "5": {
+        "name": "Hong Kong",
+        "description": "High-end urban experiences with detailed planning.",
+        "image": "image.jpg"
+      }
+    }
+  },
+  "EPNA": {
+    "name": "The Resourceful Voyager",
+    "description": "With a keen eye for detail and a love for authentic experiences, you venture wisely into the world, seeking cost-effective ways to explore genuine cultural richness.",
+    "travel_destinations": {
+      "1": {
+        "name": "Banff, Canada",
+        "description": "Budget-friendly outdoor activities and well-marked trails.",
+        "image": "image.jpg"
+      },
+      "2": {
+        "name": "Patagonia, Argentina",
+        "description": "Affordable nature exploration with planned itineraries.",
+        "image": "image.jpg"
+      },
+      "3": {
+        "name": "Yosemite National Park, USA",
+        "description": "Well-organized hiking and camping options.",
+        "image": "image.jpg"
+      },
+      "4": {
+        "name": "Cinque Terre, Italy",
+        "description": "Budget-friendly hiking with beautiful natural scenery.",
+        "image": "image.jpg"
+      },
+      "5": {
+        "name": "Queenstown, New Zealand",
+        "description": "Affordable adventure activities in nature.",
+        "image": "image.jpg"
+      }
+    }
+  },
+  "EPNS": {
+    "name": "The Refined Explorer",
+    "description": "You relish meticulously planned authentic escapades and spare no expense for premium experiences amidst the genuine beauty of cultural authenticity.",
+    "travel_destinations": {
+      "1": {
+        "name": "Swiss Alps, Switzerland",
+        "description": "Premium hiking and nature experiences.",
+        "image": "image.jpg"
+      },
+      "2": {
+        "name": "Iceland",
+        "description": "High-quality gear and luxurious nature tours.",
+        "image": "image.jpg"
+      },
+      "3": {
+        "name": "Aspen, USA",
+        "description": "Premium outdoor activities and well-organized adventures.",
+        "image": "image.jpg"
+      },
+      "4": {
+        "name": "Tasmania, Australia",
+        "description": "Luxurious nature experiences with well-planned itineraries.",
+        "image": "image.jpg"
+      },
+      "5": {
+        "name": "Dolomites, Italy",
+        "description": "High-end hiking and nature exploration.",
+        "image": "image.jpg"
+      }
+    }
+  },
+  "EOUA": {
+    "name": "The Contemporary Nomad",
+    "description": "In the lively modern landscape, you delight in spontaneous discoveries while tactfully managing your expenses, embodying a spirit of contemporary exploration.",
+    "travel_destinations": {
+      "1": {
+        "name": "Barcelona, Spain",
+        "description": "Spontaneous city exploration with budget-friendly options.",
+        "image": "image.jpg"
+      },
+      "2": {
+        "name": "Istanbul, Turkey",
+        "description": "Vibrant city life with affordable experiences.",
+        "image": "image.jpg"
+      },
+      "3": {
+        "name": "Mexico City, Mexico",
+        "description": "Energetic urban environment with spontaneous discoveries.",
+        "image": "image.jpg"
+      },
+      "4": {
+        "name": "Athens, Greece",
+        "description": "Rich history and culture with budget-conscious options.",
+        "image": "image.jpg"
+      },
+      "5": {
+        "name": "Hanoi, Vietnam",
+        "description": "Bustling city with spontaneous and affordable experiences.",
+        "image": "image.jpg"
+      }
+    }
+  },
+  "EOUS": {
+    "name": "The Trendsetting Enthusiast",
+    "description": "Immersed in vibrant modern life, you embrace impulsive adventures and luxuriate in unique experiences, reflecting a taste for contemporary extravagance.",
+    "travel_destinations": {
+      "1": {
+        "name": "Las Vegas, USA",
+        "description": "Spontaneous indulgence in a vibrant city.",
+        "image": "image.jpg"
+      },
+      "2": {
+        "name": "Rio de Janeiro, Brazil",
+        "description": "Energetic city life with opportunities to splurge.",
+        "image": "image.jpg"
+      },
+      "3": {
+        "name": "Miami, USA",
+        "description": "Spontaneous urban adventures with luxurious experiences.",
+        "image": "image.jpg"
+      },
+      "4": {
+        "name": "Shanghai, China",
+        "description": "Vibrant city with opportunities for spontaneous indulgence.",
+        "image": "image.jpg"
+      },
+      "5": {
+        "name": "Sydney, Australia",
+        "description": "Energetic urban environment with high-end experiences.",
+        "image": "image.jpg"
+      }
+    }
+  },
+  "EONA": {
+    "name": "The Cultural Wanderer",
+    "description": "Your spontaneous forays into authentic experiences are marked by frugality and a deep appreciation for the simplicity of genuine cultural exploration, echoing a free-spirited discovery.",
+    "travel_destinations": {
+      "1": {
+        "name": "Joshua Tree National Park, USA",
+        "description": "Spontaneous and budget-friendly nature trips.",
+        "image": "image.jpg"
+      },
+      "2": {
+        "name": "Scottish Highlands, UK",
+        "description": "Spontaneous hiking and nature exploration.",
+        "image": "image.jpg"
+      },
+      "3": {
+        "name": "Big Sur, USA",
+        "description": "Free-spirited and affordable outdoor experiences.",
+        "image": "image.jpg"
+      },
+      "4": {
+        "name": "Lake District, UK",
+        "description": "Spontaneous and budget-friendly nature adventures.",
+        "image": "image.jpg"
+      },
+      "5": {
+        "name": "Zion National Park, USA",
+        "description": "Spontaneous hiking and camping in nature.",
+        "image": "image.jpg"
+      }
+    }
+  },
+  "EONS": {
+    "name": "The Premier Trailblazer",
+    "description": "You navigate authentic wonders impulsively, investing in lavish experiences and premium cultural encounters to elevate your adventures in the world of authenticity.",
+    "travel_destinations": {
+      "1": {
+        "name": "Galápagos Islands, Ecuador",
+        "description": "Spontaneous and luxurious nature experiences.",
+        "image": "image.jpg"
+      },
+      "2": {
+        "name": "Serengeti, Tanzania",
+        "description": "High-end safari adventures.",
+        "image": "image.jpg"
+      },
+      "3": {
+        "name": "Maui, Hawaii, USA",
+        "description": "Spontaneous luxury in a natural setting.",
+        "image": "image.jpg"
+      },
+      "4": {
+        "name": "Bora Bora, French Polynesia",
+        "description": "Spontaneous and luxurious island adventures.",
+        "image": "image.jpg"
+      },
+      "5": {
+        "name": "Kruger National Park, South Africa",
+        "description": "High-end spontaneous safari experiences.",
+        "image": "image.jpg"
+      }
+    }
+  },
+  "RPUA": {
+    "name": "The Serene Stylist",
+    "description": "Your calm modern excursions are meticulously planned, always seeking ways to economize while enjoying the tranquil pace of contemporary life.",
+    "travel_destinations": {
+      "1": {
+        "name": "Vienna, Austria",
+        "description": "Relaxed urban exploration with well-thought-out plans.",
+        "image": "image.jpg"
+      },
+      "2": {
+        "name": "Prague, Czech Republic",
+        "description": "Calm city experiences with budget-friendly options.",
+        "image": "image.jpg"
+      },
+      "3": {
+        "name": "Kyoto, Japan",
+        "description": "Relaxed and well-planned urban adventures.",
+        "image": "image.jpg"
+      },
+      "4": {
+        "name": "Edinburgh, Scotland",
+        "description": "Calm and budget-conscious urban exploration.",
+        "image": "image.jpg"
+      },
+      "5": {
+        "name": "Porto, Portugal",
+        "description": "Relaxed city experiences with detailed planning.",
+        "image": "image.jpg"
+      }
+    }
+  },
+  "RPUS": {
+    "name": "The Leisurely Luminary",
+    "description": "You prefer a leisurely pace in modern settings, where thoughtful planning combines with a willingness to indulge in luxurious comforts for an elevated contemporary experience.",
+    "travel_destinations": {
+      "1": {
+        "name": "Venice, Italy",
+        "description": "Luxurious and relaxed city experiences.",
+        "image": "image.jpg"
+      },
+      "2": {
+        "name": "San Francisco, USA",
+        "description": "Relaxed urban exploration with high-end options.",
+        "image": "image.jpg"
+      },
+      "3": {
+        "name": "Copenhagen, Denmark",
+        "description": "Leisurely city experiences with luxury.",
+        "image": "image.jpg"
+      },
+      "4": {
+        "name": "Zurich, Switzerland",
+        "description": "Relaxed and luxurious urban adventures.",
+        "image": "image.jpg"
+      },
+      "5": {
+        "name": "Stockholm, Sweden",
+        "description": "Calm and high-end city experiences.",
+        "image": "image.jpg"
+      }
+    }
+  },
+  "RPNA": {
+    "name": "The Tranquil Traveler",
+    "description": "In your peaceful sojourns into authentic experiences, you adopt a strategic approach, seeking economical ways to explore and fully engage with genuine cultural richness.",
+    "travel_destinations": {
+      "1": {
+        "name": "Lake Bled, Slovenia",
+        "description": "Peaceful and well-planned nature trips.",
+        "image": "image.jpg"
+      },
+      "2": {
+        "name": "Plitvice Lakes, Croatia",
+        "description": "Serene and budget-friendly nature exploration.",
+        "image": "image.jpg"
+      },
+      "3": {
+        "name": "Banff, Canada",
+        "description": "Peaceful and well-organized nature experiences.",
+        "image": "image.jpg"
+      },
+      "4": {
+        "name": "Cinque Terre, Italy",
+        "description": "Serene and budget-conscious nature trips.",
+        "image": "image.jpg"
+      },
+      "5": {
+        "name": "Blue Mountains, Australia",
+        "description": "Relaxed and well-planned outdoor adventures.",
+        "image": "image.jpg"
+      }
+    }
+  },
+  "RPNS": {
+    "name": "The Refined Roamer",
+    "description": "You cherish serene, well-planned authentic getaways and spare no expense for luxurious and comfortable experiences amidst the genuine tranquility of cultural authenticity.",
+    "travel_destinations": {
+      "1": {
+        "name": "Amalfi Coast, Italy",
+        "description": "Luxurious and serene nature experiences.",
+        "image": "image.jpg"
+      },
+      "2": {
+        "name": "Napa Valley, USA",
+        "description": "High-end and relaxed nature exploration.",
+        "image": "image.jpg"
+      },
+      "3": {
+        "name": "Santorini, Greece",
+        "description": "Luxurious and tranquil island adventures.",
+        "image": "image.jpg"
+      },
+      "4": {
+        "name": "Provence, France",
+        "description": "Serene and high-end nature experiences.",
+        "image": "image.jpg"
+      },
+      "5": {
+        "name": "Whistler, Canada",
+        "description": "Luxurious and peaceful outdoor adventures.",
+        "image": "image.jpg"
+      }
+    }
+  },
+  "ROUA": {
+    "name": "The Modern Relaxed Explorer",
+    "description": "Your relaxed modern adventures are marked by spontaneity and a knack for simple pleasures, all while being mindful of your budget in the contemporary landscape.",
+    "travel_destinations": {
+      "1": {
+        "name": "Lisbon, Portugal",
+        "description": "Relaxed and spontaneous city exploration.",
+        "image": "image.jpg"
+      },
+      "2": {
+        "name": "Budapest, Hungary",
+        "description": "Chill urban experiences with budget-friendly options.",
+        "image": "image.jpg"
+      },
+      "3": {
+        "name": "Montreal, Canada",
+        "description": "Relaxed and spontaneous city adventures.",
+        "image": "image.jpg"
+      },
+      "4": {
+        "name": "Valencia, Spain",
+        "description": "Chill and budget-conscious urban exploration.",
+        "image": "image.jpg"
+      },
+      "5": {
+        "name": "Krakow, Poland",
+        "description": "Relaxed and spontaneous city experiences.",
+        "image": "image.jpg"
+      }
+    }
+  },
+  "ROUS": {
+    "name": "The Laid-Back Luminary",
+    "description": "Embracing a relaxed and spontaneous modern style, you don't hesitate to indulge in comfort and unique experiences, adding a touch of sophistication to your contemporary explorations.",
+    "travel_destinations": {
+      "1": {
+        "name": "Florence, Italy",
+        "description": "Relaxed and luxurious urban experiences.",
+        "image": "image.jpg"
+      },
+      "2": {
+        "name": "Melbourne, Australia",
+        "description": "Laid-back city exploration with high-end options.",
+        "image": "image.jpg"
+      },
+      "3": {
+        "name": "Vancouver, Canada",
+        "description": "Relaxed and luxurious urban adventures.",
+        "image": "image.jpg"
+      },
+      "4": {
+        "name": "Cape Town, South Africa",
+        "description": "Laid-back and high-end city experiences.",
+        "image": "image.jpg"
+      },
+      "5": {
+        "name": "Amsterdam, Netherlands",
+        "description": "Relaxed and luxurious urban exploration.",
+        "image": "image.jpg"
+      }
+    }
+  },
+  "RONA": {
+    "name": "The Easygoing Explorer",
+    "description": "Your spontaneous authentic jaunts exude a relaxed vibe, where simplicity reigns supreme, allowing you to appreciate the genuine beauty around you while being mindful of your expenses.",
+    "travel_destinations": {
+      "1": {
+        "name": "Cornwall, UK",
+        "description": "Relaxed and spontaneous nature trips.",
+        "image": "image.jpg"
+      },
+      "2": {
+        "name": "Algarve, Portugal",
+        "description": "Easygoing and budget-friendly nature exploration.",
+        "image": "image.jpg"
+      },
+      "3": {
+        "name": "Smoky Mountains, USA",
+        "description": "Relaxed and spontaneous outdoor adventures.",
+        "image": "image.jpg"
+      },
+      "4": {
+        "name": "Brittany, France",
+        "description": "Easygoing and budget-conscious nature experiences.",
+        "image": "image.jpg"
+      },
+      "5": {
+        "name": "Tasmania, Australia",
+        "description": "Relaxed and spontaneous nature exploration.",
+        "image": "image.jpg"
+      }
+    }
+  },
+  "RONS": {
+    "name": "The Refined Wanderer",
+    "description": "Preferring a relaxed and spontaneous approach to authentic experiences, you are willing to invest in comfort and memorable encounters to enhance your connection with genuine cultural richness.",
+    "travel_destinations": {
+      "1": {
+        "name": "Maldives",
+        "description": "Relaxed and luxurious nature experiences.",
+        "image": "image.jpg"
+      },
+      "2": {
+        "name": "Seychelles",
+        "description": "High-end and leisurely island adventures.",
+        "image": "image.jpg"
+      },
+      "3": {
+        "name": "Fiji",
+        "description": "Relaxed and luxurious nature exploration.",
+        "image": "image.jpg"
+      },
+      "4": {
+        "name": "Amalfi Coast, Italy",
+        "description": "Leisurely and high-end nature experiences.",
+        "image": "image.jpg"
+      },
+      "5": {
+        "name": "Bora Bora, French Polynesia",
+        "description": "Relaxed and luxurious island adventures.",
+        "image": "image.jpg"
+      }
+    }
+  }
+}

@@ -43,7 +43,7 @@ def result():
 
 @app.route("/result_page")
 def result_page():
-    travel_type = session.get("travel_type", [])
+    travel_type = session.get("travel_type", "")
     percentage = session.get("percentage", [None, None, None, None])
     return render_template(
         "result.html", travel_type=travel_type, percentage=percentage
@@ -79,6 +79,11 @@ def get_response():
         user_input, retriever, groq_api_key, chat_history_store, session_id, "", ""
     )
     return jsonify({"user_input": user_input, "ai_response": ai_response})
+
+
+@app.route("/travel_types")
+def travel_types():
+    return render_template("travel_types.html")
 
 
 if __name__ == "__main__":

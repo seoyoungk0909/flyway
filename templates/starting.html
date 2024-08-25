@@ -5,6 +5,87 @@
     <h1 class="starting-title" data-i18n="starting-title"></h1>
     <p class="starting-description" data-i18n="starting-description"></p>
   </div>
-  <a href="/type_test" class="starting-button" data-i18n="starting-button"></a>
+
+  <div class="butler-container">
+    <div class="butler-1"></div>
+    <a id="take-test-button" class="starting-button"
+      ><i class="fa-solid fa-chevron-down"></i>
+    </a>
+
+    <div class="butler-2"></div>
+  </div>
 </div>
-{% endblock %}
+
+<div id="about-us" class="about-us">
+  <h1>About Us</h1>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function () {
+    let animationTriggered = false;
+    let lastScrollTop = 0;
+
+    function animateButlersOut(callback) {
+      $(".butler-1").css("transform", "translateX(-150%)");
+      $(".butler-2").css("transform", "translateX(150%)");
+      // setTimeout(callback, 100); // Adjust the timeout duration as needed
+    }
+
+    function animateButlersIn() {
+      $(".butler-1").css("transform", "translateX(0)");
+      $(".butler-2").css("transform", "translateX(0)");
+    }
+
+    function scrollToAboutUs() {
+      $("html, body").animate(
+        {
+          scrollTop: $("#about-us").offset().top,
+        },
+        1000
+      );
+      $("#about-us").fadeIn(1000);
+    }
+
+    function scrollToTop() {
+      $("html, body").animate(
+        {
+          scrollTop: 0,
+        },
+        1000
+      );
+    }
+
+    // Click event on the button
+    $("#take-test-button").click(function () {
+      if (!animationTriggered) {
+        animationTriggered = true;
+        animateButlersOut();
+        scrollToAboutUs();
+      }
+    });
+
+    // Scroll event to trigger the animation
+    $(window).scroll(function () {
+      let st = $(this).scrollTop();
+      if (st > lastScrollTop) {
+        // Scrolling down
+        if (!animationTriggered && st > 50) {
+          // Adjust the scroll threshold as needed
+          animationTriggered = true;
+          animateButlersOut();
+          scrollToAboutUs();
+        }
+      } else {
+        // Scrolling up
+        if (animationTriggered && st < 50) {
+          // Adjust the scroll threshold as needed
+          animationTriggered = false;
+          animateButlersIn();
+        }
+      }
+      lastScrollTop = st;
+    });
+  });
+</script>
+
+{% endblock %} HEREDOC
