@@ -17,8 +17,8 @@
     let calculations = {
       energetic: 0,
       relaxed: 0,
-      planned: 0,
       spontaneous: 0,
+      planned: 0,
       modern: 0,
       authentic: 0,
       saving: 0,
@@ -121,25 +121,25 @@
     displayQuestion(); // Re-render the questions to update button styles
   }
 
-    // function calculatePoints() {
-    //   // Reset calculations
-    //   for (let key in calculations) {
-    //     calculations[key] = 0;
-    //   }
+    function calculatePoints() {
+      // Reset calculations
+      for (let key in calculations) {
+        calculations[key] = 0;
+      }
 
-    //   answers.forEach((optionIndex, questionIndex) => {
-    //     if (optionIndex !== null) {
-    //       const selectedOptionCalculations =
-    //         questions[questionIndex].calculations[optionIndex];
-    //       for (const key in selectedOptionCalculations) {
-    //         if (selectedOptionCalculations.hasOwnProperty(key)) {
-    //           const calc = selectedOptionCalculations[key];
-    //           calculations[calc.type] += calc.point;
-    //         }
-    //       }
-    //     }
-    //   });
-    // }
+      answers.forEach((optionIndex, questionIndex) => {
+        if (optionIndex !== null) {
+          const selectedOptionCalculations =
+            questions[questionIndex].calculations[optionIndex];
+          for (const key in selectedOptionCalculations) {
+            if (selectedOptionCalculations.hasOwnProperty(key)) {
+              const calc = selectedOptionCalculations[key];
+              calculations[calc.type] += calc.point;
+            }
+          }
+        }
+      });
+    }
 
   // Helper function to calculate percentage of target value between two values
   function calculatePercentage(target, other) {
@@ -151,8 +151,8 @@
       let letterMapping = {
         energetic: "E",
         relaxed: "R",
-        planned: "P",
         spontaneous: "O",
+        planned: "P",
         modern: "U",
         authentic: "N",
         saving: "A",
@@ -192,7 +192,7 @@
     }
 
     function submitAnswers() {
-      // calculatePoints();
+      calculatePoints();
       calculatePercentageAndType();
       fetch("/result", {
         method: "POST",
