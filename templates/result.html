@@ -1,5 +1,9 @@
 {% extends 'base.html' %} {% block body %}
 <div class="background-result">
+    <div class="butler-container-result">
+        <div class="butler-1"></div>
+        <div class="butler-2"></div>
+    </div>
     <div class="result-container">
         <div class="container-background-result">
             <h2>Your Personality Test Result</h2>
@@ -37,7 +41,7 @@
                     travel_destinations = data[travel_type]['travel_destinations'];
 
 
-                    // percentage = data[travel_type]['percentage'];
+                    percentage = data[travel_type]['percentage'];
                     displayResult(name, description, travel_destinations, percentage);
                     sendTravelTypes(); // Send the travel types to the server
                 })
