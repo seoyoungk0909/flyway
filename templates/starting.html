@@ -1,25 +1,40 @@
 {% extends 'base.html' %} {% block body %}
 
 <div class="container-background">
-  <div class="container">
-    <h1 class="starting-title" data-i18n="starting-title"></h1>
-    <p class="starting-description" data-i18n="starting-description"></p>
-  </div>
+  <img
+    class="container-background"
+    src="../static/style/svg/home.svg"
+    alt="home"
+    class="home-svg"
+  />
+
+  <!-- <div class="home-container"> -->
+  <!-- <h1 class="starting-title" data-i18n="starting-title"></h1>
+    <p class="starting-description" data-i18n="starting-description"></p> -->
+  <!-- </div> -->
 
   <div class="butler-container">
     <div class="butler-1"></div>
     <a id="take-test-button" class="starting-button"><i class="fa-solid fa-chevron-down"></i>
     </a>
-
     <div class="butler-2"></div>
   </div>
 </div>
 
 <div id="about-us" class="about-us">
-  <h1>About Us</h1>
+  <h1 style="padding-top: 60px">About Us</h1>
+  <button id="scroll-top-btn" class="scroll-top-btn">
+    <i class="fa-solid fa-chevron-up"></i>
+  </button>
 </div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+  document
+    .getElementById("scroll-top-btn")
+    .addEventListener("click", function () {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
   $(document).ready(function () {
     let animationTriggered = false;
     let lastScrollTop = 0;
@@ -88,3 +103,4 @@
 </script>
 
 {% endblock %}
+
