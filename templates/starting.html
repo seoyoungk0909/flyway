@@ -24,12 +24,16 @@
 
 <div id="about-us" class="about-us">
   <h1 style="padding-top: 60px">About Us</h1>
-  <button id="scroll-top-btn" class="scroll-top-btn">
-    <i class="fa-solid fa-chevron-up"></i>
+  <button id="scroll-top-btn">
+    <i data-lucide="chevrons-up"></i>
   </button>
 </div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+  document.addEventListener("DOMContentLoaded", (event) => {
+    lucide.createIcons();
+  });
+
   document
     .getElementById("scroll-top-btn")
     .addEventListener("click", function () {
