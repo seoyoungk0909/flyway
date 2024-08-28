@@ -105,6 +105,50 @@ body {
 
 .butler-2 {
   background-image: url("./svg/butler-2.svg");
+} 
+
+.butler-container-result {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: 200px; 
+  margin-top: 400px;
+  align-items: center; 
+  gap: 40%;
+}
+
+.background-result {
+  background-image: url("./svg/result.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  height: 105vh;
+  background-color: #A97754;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-position: center;
+  margin-top: -50px;
+  z-index: 1;
+}
+
+.background-chat {
+  background-image: url("./svg/chat.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  height: 105vh;
+  background-color: #fff5e1; 
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-position: center;
+  margin-top: -100px;
+  z-index: 1;
+}
+
+.butler-group-chat {
+  background-image: url("./svg/butler-group-chat.svg");
 }
 
 .home-container {
@@ -135,6 +179,8 @@ body {
   margin-top: -38%;
   font-family: "Crimson Text", serif;
 }
+
+
 
 .starting-button:hover {
   color: white;
@@ -277,6 +323,13 @@ body {
 }
 
 /* chat.css */
+
+#chat-content{
+  width: 1000px;
+  height: 500px;
+  opacity: 0.8; 
+}
+
 .chat-container {
   width: 100%;
   height: 80vh;
@@ -321,6 +374,7 @@ body {
 .chat-bubble.assistant {
   background-color: #e1ffc7;
   align-self: flex-start;
+  opacity: 1; 
 }
 
 .chat-bubble.assistant::after {
@@ -385,6 +439,7 @@ body {
   align-items: center;
   z-index: 1000;
 }
+
 #splash-screen.hidden {
   display: none;
 }

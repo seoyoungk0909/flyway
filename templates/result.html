@@ -1,127 +1,136 @@
 {% extends 'base.html' %} {% block body %}
-<div class="result-container">
-    <h2>Your Personality Test Result</h2>
-    <h3 id="personality-type">Your type is:</h3>
-    <p id="personality-description"> Personality description: </p>
-    <p id="recommendation-places"> Recommendation desitination: </p>
-    <p id="percentages-list"> Percentage list: <br></p>
-    <a href="/chat" class="btn btn-primary">Chat</a>
+<div class="background-result">
+    <div class="butler-container-result">
+        <div class="butler-1"></div>
+        <div class="butler-2"></div>
+    </div>
+    <div class="result-container">
+        <div class="container-background-result">
+            <h2>Your Personality Test Result</h2>
+            <h3 id="personality-type">Your type is:</h3>
+            <p id="personality-description"> Personality description: </p>
+            <p id="recommendation-places"> Recommendation desitination: </p>
+            <p id="percentages-list"> Percentage list: <br></p>
+            <a href="/chat" class="btn btn-primary">Chat</a>
+        </div>
+    </div>
 
-</div>
 
-
-<script>
-    // Prevent the user from navigating back
-    window.history.pushState(null, "", window.location.href);
-    window.onpopstate = function() {
+    <script>
+        // Prevent the user from navigating back
         window.history.pushState(null, "", window.location.href);
-    };
-
-    localStorage.setItem('result', true)
-    var travel_type = JSON.parse('{{ travel_type | tojson | safe}}');
-    var percentage = JSON.parse('{{ percentage | tojson | safe}}');
-    var name = "";
-    var description = "";
-    var travel_destinations = {};
-    // console.log(travel_type);
-    // console.log(percentage);
-
-    document.addEventListener("DOMContentLoaded", function () {
-        fetch("/static/data/travel_type/results-en.json")
-            .then((response) => response.json())
-            .then((data) => {
-                name = data[travel_type]['name'];
-                description = data[travel_type]['description'];
-                travel_destinations = data[travel_type]['travel_destinations'];
-
-
-                // percentage = data[travel_type]['percentage'];
-                displayResult(name, description, travel_destinations, percentage);
-                sendTravelTypes(); // Send the travel types to the server
-            })
-            .catch((error) => console.error("Error fetching JSON data:", error));
-    });
-
-    function displayResult(name, description, travel_destinations, percentage) {
-        const type_header = document.getElementById("personality-type");
-        type_header.textContent += name;
-
-        const type_description = document.getElementById("personality-description");
-        type_description.textContent += description;
-        console.log(description);
-
-
-        const recommendationPlacesList = document.getElementById("recommendation-places");
-
-        // Loop through the travel_destinations object
-        for (const destinationId in travel_destinations) {
-            const destination = travel_destinations[destinationId];
-            const listItem = document.createElement("li");
-            listItem.textContent = `${destination.name} - ${destination.description}`;
-            recommendationPlacesList.appendChild(listItem);
-        }
-        displayPercentage(percentage);
-    }
-    function displayPercentage(percentage) {
-        const typeNameMapping = {
-            energetic: "Dynamic",
-            spontaneous: "Flexible",
-            modern: "Contemporary",
-            saving: "Economical",
-            risk: "Adventurous",
+        window.onpopstate = function () {
+            window.history.pushState(null, "", window.location.href);
         };
 
-        const percentagesList = document.getElementById("percentages-list");
-        let percentagesHTML = '';
+        localStorage.setItem('result', true)
+        var travel_type = JSON.parse('{{ travel_type | tojson | safe}}');
+        var percentage = JSON.parse('{{ percentage | tojson | safe}}');
+        var name = "";
+        var description = "";
+        var travel_destinations = {};
+        // console.log(travel_type);
+        // console.log(percentage);
 
-        for (let i = 0; i < percentage.length; i += 2) {
-            const type1 = percentage[i][0];
-            const percent1 = percentage[i][1];
-            // const type2 = percentage[i + 1][0];
-            // const percent2 = percentage[i + 1][1];
-            // Compare percentages and display only the letter with the higher percentage
-            // if (percent1 > percent2) {
-            //     percentagesHTML += `<li>${typeNameMapping[type1]}: ${percent1}</li>`;
-            // } else if (percent2 > percent1) {
-            //     percentagesHTML += `<li>${typeNameMapping[type2]}: ${percent2}</li>`;
-            // } else {
-            //     // Handle ties (if needed) - you could display both letters or a special message
-            //     percentagesHTML += `<li>${typeNameMapping[type1]}/${typeNameMapping[type2]}</li>`;
-            // }
-            if (typeNameMapping[type1] != undefined) {
-                percentagesHTML += `<li>${typeNameMapping[type1]}: ${percent1}%</li>`;
-            }
-        }
-        percentagesList.innerHTML += `<ul>${percentagesHTML}</ul>`;
-    }
+        document.addEventListener("DOMContentLoaded", function () {
+            fetch("/static/data/travel_type/results-en.json")
+                .then((response) => response.json())
+                .then((data) => {
+                    name = data[travel_type]['name'];
+                    description = data[travel_type]['description'];
+                    travel_destinations = data[travel_type]['travel_destinations'];
 
-    function sendTravelTypes() {
-      fetch("/result_to_llm", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-            name: name,
-            description: description,
-            travel_destinations: travel_destinations,
-        }),
-      })
-        .then((response) => response.json())
-        .catch((error) => {
-          console.error("Error:", error);
+
+                    percentage = data[travel_type]['percentage'];
+                    displayResult(name, description, travel_destinations, percentage);
+                    sendTravelTypes(); // Send the travel types to the server
+                })
+                .catch((error) => console.error("Error fetching JSON data:", error));
         });
-    }
+
+        function displayResult(name, description, travel_destinations, percentage) {
+            const type_header = document.getElementById("personality-type");
+            type_header.textContent += name;
+
+            const type_description = document.getElementById("personality-description");
+            type_description.textContent += description;
+            console.log(description);
+
+
+            const recommendationPlacesList = document.getElementById("recommendation-places");
+
+            // Loop through the travel_destinations object
+            for (const destinationId in travel_destinations) {
+                const destination = travel_destinations[destinationId];
+                const listItem = document.createElement("li");
+                listItem.textContent = `${destination.name} - ${destination.description}`;
+                recommendationPlacesList.appendChild(listItem);
+            }
+            displayPercentage(percentage);
+        }
+        function displayPercentage(percentage) {
+            const typeNameMapping = {
+                energetic: "Dynamic",
+                spontaneous: "Flexible",
+                modern: "Contemporary",
+                saving: "Economical",
+                risk: "Adventurous",
+            };
+
+            const percentagesList = document.getElementById("percentages-list");
+            let percentagesHTML = '';
+
+            for (let i = 0; i < percentage.length; i += 2) {
+                const type1 = percentage[i][0];
+                const percent1 = percentage[i][1];
+                // const type2 = percentage[i + 1][0];
+                // const percent2 = percentage[i + 1][1];
+                // Compare percentages and display only the letter with the higher percentage
+                // if (percent1 > percent2) {
+                //     percentagesHTML += `<li>${typeNameMapping[type1]}: ${percent1}</li>`;
+                // } else if (percent2 > percent1) {
+                //     percentagesHTML += `<li>${typeNameMapping[type2]}: ${percent2}</li>`;
+                // } else {
+                //     // Handle ties (if needed) - you could display both letters or a special message
+                //     percentagesHTML += `<li>${typeNameMapping[type1]}/${typeNameMapping[type2]}</li>`;
+                // }
+                if (typeNameMapping[type1] != undefined) {
+                    percentagesHTML += `<li>${typeNameMapping[type1]}: ${percent1}%</li>`;
+                }
+            }
+            percentagesList.innerHTML += `<ul>${percentagesHTML}</ul>`;
+        }
+
+        function sendTravelTypes() {
+            fetch("/result_to_llm", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    name: name,
+                    description: description,
+                    travel_destinations: travel_destinations,
+                }),
+            })
+                .then((response) => response.json())
+                .catch((error) => {
+                    console.error("Error:", error);
+                });
+        }
 
 
 
-</script>
+    </script>
 
 
 
-</body>
+    </body>
 
 
 
 
-{% endblock %}
+
+
+
+    {% endblock %}
