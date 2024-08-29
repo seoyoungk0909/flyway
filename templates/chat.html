@@ -1,141 +1,160 @@
 {% extends 'base.html' %} {% block body %}
 <div>
+
   <body>
-    <div id="splash-screen">
-      <p data-i18n="loading"></p>
-    </div>
-    <div id="chat-content" style="display: none">
-      <div class="chat-container">
-        <div class="chat-box" id="chat-box"></div>
-        <div class="chat-input input-group">
-          <input
-            type="text"
-            id="user-input"
-            class="form-control"
-            placeholder="Type your enquiry here..."
-            required
-          />
-          <div class="input-group-append">
-            <button type="submit" id="send-button" class="btn btn-primary">
-              Send
-            </button>
+    <div class="background-chat">
+      <div id="splash-screen">
+        <p data-i18n="loading"></p>
+      </div>
+      <div id="chat-content" style="display: none">
+        <div class="container">
+          <div class="chat-container">
+            <div class="chat-box" id="chat-box"></div>
+            <div class="chat-input input-group">
+              <input type="text" id="user-input" class="" placeholder="In which matter may I be of service to you today?"
+                required />
+              <div class="input-group-append">
+                <button type="submit" id="send-button">
+                  <i data-lucide="arrow-up"></i>
+                </button>
+                <div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <script>
-      // Splash screen
-      document.addEventListener("DOMContentLoaded", function () {
-        fetch("/initialise_llm")
-          .then((response) => response.json())
-          .then((data) => {
-            document.getElementById("splash-screen").classList.add("hidden");
-            document.getElementById("chat-content").style.display = "block";
-          });
-        const initialMessage = document.createElement("div");
-        initialMessage.classList.add("chat-bubble", "assistant");
-        initialMessage.textContent =
-          "My dearly Sir/Madam, it's a pleasure to serve you. How may I assist you today?";
-        document.getElementById("chat-box").appendChild(initialMessage);
-      });
-
-      function isValidUrl(string) {
-        try {
-          new URL(string);
-          return true;
-        } catch (_) {
-          return false;
-        }
+      <script>
+        lucide.createIcons();
+      function assistantMessageUI(message){
+        return `<div class="message-content assistant">
+            <div class="chat-icon-container">
+                <img src="../static/style/svg/chat-icon-assistant.svg" alt="Icon" class="chat-svg-icon">
+            </div>
+            <div class="chat-bubble assistant">
+                ${message}
+            </div>
+        </div>`
       }
 
-      const typeTestCompleted = localStorage.getItem("result");
-      // let typeTestCompleted = true;
+        // Splash screen
+        document.addEventListener("DOMContentLoaded", function () {
+          lucide.createIcons();
+          fetch("/initialise_llm")
+            .then((response) => response.json())
+            .then((data) => {
+              document.getElementById("splash-screen").classList.add("hidden");
+              document.getElementById("chat-content").style.display = "block";
+            });
 
-      function sendMessage() {
-        // Check if the type test is completed before sending the message
-        if (!typeTestCompleted) {
-          alert(
-            "You have not finished the type test, please finish the travel type test first"
-          );
-          window.location.href = "/type_test";
-          return;
-        }
-
-        const userInput = document.getElementById("user-input").value;
-        if (!userInput) return;
-        document.getElementById("user-input").value = "";
-
-        const chatBox = document.getElementById("chat-box");
-        const userMessage = document.createElement("div");
-        userMessage.classList.add("chat-bubble", "user");
-        userMessage.textContent = userInput;
-        chatBox.appendChild(userMessage);
-
-        const loadingMessage = document.createElement("div");
-        loadingMessage.classList.add("chat-bubble", "assistant");
-        loadingMessage.textContent =
-          "My dearly Sir/Madam, please allow me to think...";
-        chatBox.appendChild(loadingMessage);
-
-        chatBox.scrollTop = chatBox.scrollHeight;
-
-        fetch("/get_response", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ user_input: userInput }),
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            chatBox.removeChild(loadingMessage);
-            const aiResponse = data.ai_response;
-            if (isValidUrl(aiResponse)) {
-              const aiImage = document.createElement("img");
-              aiImage.src = aiResponse;
-              aiImage.alt = "AI Response Image";
-              aiImage.classList.add("chat-bubble", "assistant");
-              chatBox.appendChild(aiImage);
-            } else {
-              const aiMessage = document.createElement("div");
-              aiMessage.classList.add("chat-bubble", "assistant");
-              aiMessage.textContent = aiResponse;
-              chatBox.appendChild(aiMessage);
-            }
-            chatBox.scrollTop = chatBox.scrollHeight;
-          })
-          .catch((error) => {
-            console.log(error);
-            chatBox.removeChild(loadingMessage);
-            const errorMessage = document.createElement("div");
-            errorMessage.classList.add("chat-bubble", "assistant");
-            errorMessage.textContent = error;
-            // "Error generating response. Please try again.";
-            chatBox.appendChild(errorMessage);
-            chatBox.scrollTop = chatBox.scrollHeight;
-          });
-      }
-
-      function markTypeTestComplete() {
-        typeTestCompleted = true;
-      }
-
-      document
-        .getElementById("send-button")
-        .addEventListener("click", function (event) {
-          event.preventDefault();
-          sendMessage();
+          initialMessage = assistantMessageUI("My dearly Sir/Madam, it's a pleasure to serve you. How may I assist you today?");
+          document.getElementById("chat-box").innerHTML += initialMessage;
         });
 
-      document
-        .getElementById("user-input")
-        .addEventListener("keydown", function (event) {
-          if (event.key === "Enter") {
+        function isValidUrl(string) {
+          try {
+            new URL(string);
+            return true;
+          } catch (_) {
+            return false;
+          }
+        }
+
+        const typeTestCompleted = localStorage.getItem("result");
+        // let typeTestCompleted = true;
+
+        function sendMessage() {
+          // Check if the type test is completed before sending the message
+          if (!typeTestCompleted) {
+            alert(
+              "You have not finished the type test, please finish the travel type test first"
+            );
+            window.location.href = "/type_test";
+            return;
+          }
+
+          const userInput = document.getElementById("user-input").value;
+          if (!userInput) return;
+          document.getElementById("user-input").value = "";
+          const chatBox = document.getElementById("chat-box");
+
+          userMessage = `<div class="message-content user">
+            <div class="chat-icon-container">
+                    <img src="../static/style/svg/chat-icon-user.svg" alt="Icon" class="chat-svg-icon">
+                </div>
+                <div class="chat-bubble user">
+                    ${userInput}
+                </div>
+            </div>`
+          chatBox.innerHTML += userMessage;
+
+          loadingMessage = `
+              <div id="loadingMessage" class="message-content assistant">
+                  <div class="chat-icon-container">
+                      <img src="../static/style/svg/chat-icon-assistant.svg" alt="Icon" class="chat-svg-icon">
+                  </div>
+                  <div class="chat-bubble assistant">
+                      My dearly Sir/Madam, please allow me to think...
+                  </div>
+              </div>
+          `;
+          chatBox.insertAdjacentHTML('beforeend', loadingMessage);
+          const loadingMessageElement = document.getElementById('loadingMessage');
+
+          chatBox.scrollTop = chatBox.scrollHeight;
+
+          fetch("/get_response", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ user_input: userInput }),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (loadingMessageElement) {
+                chatBox.removeChild(loadingMessageElement);
+              }
+
+              const aiResponse = data.ai_response;
+              if (isValidUrl(aiResponse)) {
+                aiImage = assistantMessageUI(`<img src="${aiResponse}" alt="AI Response Image">`);
+                chatBox.innerHTML += aiImage
+              } else {
+                aiMessage = assistantMessageUI(aiResponse);
+                chatBox.innerHTML += aiMessage;
+              }
+              chatBox.scrollTop = chatBox.scrollHeight;
+            })
+            .catch((error) => {
+              console.log(error);
+              chatBox.removeChild(loadingMessageElement);
+              errorMessage = assistantMessageUI(error);
+              chatBox.innerHTML += errorMessage;
+              chatBox.scrollTop = chatBox.scrollHeight;
+            });
+        }
+
+        function markTypeTestComplete() {
+          typeTestCompleted = true;
+        }
+
+        document
+          .getElementById("send-button")
+          .addEventListener("click", function (event) {
             event.preventDefault();
             sendMessage();
-          }
-        });
-    </script>
+          });
+
+        document
+          .getElementById("user-input")
+          .addEventListener("keydown", function (event) {
+            if (event.key === "Enter") {
+              event.preventDefault();
+              sendMessage();
+            }
+          });
+      </script>
   </body>
 </div>
 {% endblock %}
