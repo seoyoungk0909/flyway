@@ -2,7 +2,7 @@
 body {
   margin: 0;
   font-family: "Crimson Text", serif;
-  background-color: #fff5e1;
+  /* background-color: #fff5e1; */
   overflow-y: auto;
 }
 
@@ -203,23 +203,24 @@ body {
   position: relative;
 }
 
-.scroll-top-btn {
+#scroll-top-btn {
   position: fixed;
   bottom: 20px;
   right: 20px;
-  width: 35px;
-  height: 35px;
+  width: 40px;
+  height: 40px;
   padding: 5px;
   background-color: white;
   border-radius: 50%;
   border-color: transparent;
-  color: #d2992a;
+  color: #d7a33c;
   cursor: pointer;
 }
 
-/* .scroll-top-btn:hover {
-  background-color: #D2992A;
-} */
+#scroll-top-btn:hover {
+  background-color: #d7a33c;
+  color: white;
+}
 
 /* type_test.css */
 
