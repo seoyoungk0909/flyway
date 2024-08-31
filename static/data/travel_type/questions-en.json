@@ -1,6 +1,6 @@
 {
   "1": {
-    "question": "May I inquire, my dear sir/madam, how would you prefer to immortalize your precious travel memories?",
+    "question": "May I inquire, my dear sir/lady, how would you prefer to immortalize your precious travel memories?",
     "option_1": {
       "answer": "Take photos as much as possible! Posting on social media is all about travel.",
       "calculation": {
@@ -54,7 +54,7 @@
     }
   },
   "4": {
-    "question": "In your esteemed opinion, how would you prefer to immerse yourself in a new urban setting?",
+    "question": "Apologies sir/lady, I could not prepare private limousine for the trip. How would you prefer to travel around?",
     "option_1": {
       "answer": "Save money, we have strong legs! Walking and buses help me see the city like a local.",
       "calculation": {
@@ -90,7 +90,7 @@
     }
   },
   "6": {
-    "question": "Dear sir/madam, when it comes to your journeys, do you prefer to follow your heart in the moment or meticulously plan ahead for efficiency?",
+    "question": "Dear sir/lady, when it comes to your journeys, do you prefer to follow your heart in the moment or meticulously plan ahead for efficiency?",
     "option_1": {
       "answer": "My legs follow my heart. I would decide what to do depending on what I want to do at that moment.",
       "calculation": {
@@ -108,7 +108,7 @@
     }
   },
   "7": {
-    "question": "How do you prefer to commence your day whilst traveling, my dear sir/madam?",
+    "question": "When would you like me to wake you up my dear sir/lady?",
     "option_1": {
       "answer": "Rise and shine! I love starting my day early with a packed schedule to make the most of every moment.",
       "calculation": {
@@ -125,7 +125,7 @@
     }
   },
   "8": {
-    "question": "May I ask, what type of accommodation suits your grace?",
+    "question": "Though it may not compare to the palace you reside in, what type of accommodation do you prefer the most during your travels?",
     "option_1": {
       "answer": "Budget-friendly all the way. Hostels or Airbnb give me the local vibe without breaking the bank.",
       "calculation": {
@@ -142,7 +142,7 @@
     }
   },
   "9": {
-    "question": "How do you elegantly handle unforeseen changes in your travel plans, dear sir/madam?",
+    "question": "How do you elegantly handle unforeseen changes in your travel plans, dear sir/lady?",
     "option_1": {
       "answer": "Go with the flow! I adapt quickly and find new plans to keep the adventure going.",
       "calculation": {
@@ -159,7 +159,7 @@
     }
   },
   "10": {
-    "question": "As the night falls, how does your grace prefer to courtesy the evenings during your travels?",
+    "question": "My sir/lady, it is getting late. How would you like to spend the night? Sleeping late can damage your delicate skin?",
     "option_1": {
       "answer": "Nightlife explorer. I enjoy checking out the local entertainment and vibrant nightlife.",
       "calculation": {
@@ -177,7 +177,7 @@
     }
   },
   "11": {
-    "question": "Regarding matters of security and comfort, what are your sentiments towards travel insurance, my sir/madam?",
+    "question": "Of course, there are ten guards for my sir/lady, but how would you like to handle travel insurance?",
     "option_1": {
       "answer": "A must-have! Travel insurance is essential for peace of mind on every trip.",
       "calculation": {
@@ -196,7 +196,7 @@
     }
   },
   "12": {
-    "question": "In your wisdom, what meticulous method guides your packing rituals for each sojourn?",
+    "question": "My lady/sir, how many luggages would you like to take?",
     "option_1": {
       "answer": "Travel light. I pack only the essentials to keep things simple and easy.",
       "calculation": {
@@ -232,7 +232,7 @@
     }
   },
   "14": {
-    "question": "Dear sir/madam, in matters of exploration, how does your esteemed self perceive the significance of off-the-beaten-path destinations?",
+    "question": "Dear sir/lady, in matters of exploration, how does your esteemed self perceive the significance of off-the-beaten-path destinations?",
     "option_1": {
       "answer": "Thrill of the unknown! I seek out hidden gems and unexplored territories to enrich my travel experiences.",
       "calculation": {
