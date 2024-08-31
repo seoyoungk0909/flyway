@@ -1,1 +1,131 @@
-{% extends 'base.html' %} {% block body %} {% endblock %}
+{% extends 'base.html' %} {% block body %}
+<div class="type-gallery">
+  <!-- Frames will be dynamically inserted here by JavaScript -->
+</div>
+
+<!-- Modal -->
+<div id="type-modal">
+  <div class="type-modal-content">
+    <span class="type-close">&times;</span>
+    <div id="type-modal-name"></div>
+    <div id="type-modal-description"></div>
+    <div id="type-modal-destinations"></div>
+  </div>
+</div>
+
+<script>
+  const gallery = document.querySelector(".type-gallery");
+  const modal = document.getElementById("type-modal");
+  const modalDescription = document.getElementById("type-modal-description");
+  const closeModal = document.querySelector(".type-close");
+  var result_list = [];
+
+  document.addEventListener("DOMContentLoaded", () => {
+    fetch("/static/data/travel_type/results-en.json")
+      .then((response) => response.json())
+      .then((data) => {
+        for (const key in data) {
+          if (data.hasOwnProperty(key)) {
+            const element = data[key];
+            // letter = key;
+            name = element["name"];
+            description = element["description"];
+            travel_destinations = element["travel_destinations"];
+            result_list.push([name, description, travel_destinations]);
+          }
+        }
+        // console.log(result_list[0]);
+        result_list.sort((a, b) => a[0].localeCompare(b[0]));
+
+        displayGallery(result_list);
+      })
+      .catch((error) => console.error("Error fetching JSON data:", error));
+
+    function displayGallery(result_list) {
+      // Load frames and SVGs
+      for (let i = 0; i < 16; i++) {
+        const frame = document.createElement("div");
+        frame.classList.add("type-frame");
+        frame.innerHTML = `
+            <img src="../static/style/svg/travel-type-gallery.svg" alt="Frame ${i}" class="type-frame-background">
+            <p id="type-frame-text"> ${result_list[i][0]} <p>
+        `;
+        gallery.appendChild(frame);
+
+        frame.addEventListener("click", () => {
+          const rect = frame.getBoundingClientRect();
+          const initialTransform = `translate(${rect.left - 100}px, ${
+            rect.top - 100
+          }px) scale(1)`;
+
+          // Calculate the scale factor based on the desired height (47vw)
+          const scaleFactor = (20.85 * window.innerWidth) / 100 / rect.height;
+
+          const bigger_frame = document.createElement("div");
+          bigger_frame.id = "bigger-frame";
+          bigger_frame.classList.add("type-frame-fullscreen");
+          bigger_frame.style.setProperty(
+            "--initial-transform",
+            initialTransform
+          );
+          bigger_frame.style.setProperty("--scale-factor", scaleFactor);
+          bigger_frame.innerHTML = `
+        <img src="../static/style/svg/travel-type-gallery.svg" alt="Frame ${i}" class="fullscreen-type-frame-background">
+      `;
+          gallery.appendChild(bigger_frame);
+          // Create and append the overlay
+          const overlay = document.createElement("div");
+          overlay.id = "overlay";
+          gallery.appendChild(overlay);
+
+          // Ensure the fullscreen frame is above the overlay
+          bigger_frame.style.zIndex = 2;
+
+          document.getElementById("type-modal").style.display = "flex";
+          document.getElementById("type-modal-description").textContent =
+            result_list[i][1];
+          document.getElementById("type-modal-name").textContent =
+            result_list[i][0];
+          recommendationPlacesList = document.getElementById(
+            "type-modal-destinations"
+          );
+
+          for (const destinationId in result_list[i][2]) {
+            const destination = result_list[i][2][destinationId];
+            const listItem = document.createElement("li");
+            listItem.textContent = `${destination.name} - ${destination.description}`;
+            recommendationPlacesList.appendChild(listItem);
+          }
+        });
+      }
+    }
+
+    // Close modal
+    closeModal.addEventListener("click", () => {
+      document.getElementById("bigger-frame").remove();
+      document.getElementById("overlay").remove();
+      modal.style.display = "none";
+    });
+
+    // Close modal when clicking outside of the modal content
+    window.addEventListener("click", (event) => {
+      if (event.target === modal) {
+        document.getElementById("bigger-frame").remove();
+        document.getElementById("overlay").remove();
+        modal.style.display = "none";
+      }
+    });
+    // window.addEventListener("click", (event) => {
+    //   const overlay = document.getElementById("overlay");
+    //   const bigger_frame = document.getElementById("bigger-frame");
+    //   const modalContent = document.getElementById("type-modal");
+
+    //   if (event.target === overlay) {
+    //     document.getElementById("bigger-frame").remove();
+    //     overlay.remove();
+    //     modal.style.display = "none";
+    //   }
+    // });
+  });
+</script>
+{% endblock %}
