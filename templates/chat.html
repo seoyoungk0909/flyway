@@ -37,6 +37,15 @@
         </div>`
       }
 
+      // let welcomeMessage = "My dearly Sir/Madam, it's a pleasure to serve you. How may I assist you today?"
+
+      // window.addEventListener("DOMContentLoaded", async () => {
+      //   const userPreferredLanguage = localStorage.getItem("language") || "en";
+      //   if (userPreferredLanguage === "kr") {
+      //     welcomeMessage = "친애하는 고객님, 당신을 도와드릴 수 있어서 기쁩니다. 오늘 어떻게 도와 드릴까요?"
+      //   }
+      // });
+
         // Splash screen
         document.addEventListener("DOMContentLoaded", function () {
           lucide.createIcons();
@@ -46,8 +55,14 @@
               document.getElementById("splash-screen").classList.add("hidden");
               document.getElementById("chat-content").style.display = "block";
             });
-
-          initialMessage = assistantMessageUI("My dearly Sir/Madam, it's a pleasure to serve you. How may I assist you today?");
+            const userPreferredLanguage = localStorage.getItem("language") || "en";
+            let welcomeMessage = "My dearly Sir/Madam, it's a pleasure to serve you. How may I assist you today?"
+            if (userPreferredLanguage === "kr") {
+              const userInput = document.getElementById("user-input");
+              userInput.placeholder = "무엇이 궁금하신가요 아가씨/도련님?";
+              welcomeMessage = "안녕하십니까 아가씨/도련님, 모시게 되어 영광입니다. 오늘 어떻게 도와 드릴까요?"
+            }
+          initialMessage = assistantMessageUI(welcomeMessage);
           document.getElementById("chat-box").innerHTML += initialMessage;
         });
 
