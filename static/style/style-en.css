@@ -4,6 +4,7 @@ body {
   font-family: "Crimson Text", serif;
   background-color: #fff5e1;
   overflow-y: auto;
+  color: #794b2a;
 }
 
 /* header-footer.css */
@@ -62,7 +63,7 @@ body {
   width: 100%;
   height: 100%;
   overflow-y: auto;
-  margin-top: -6%;
+  margin-top: -5.5%;
   z-index: 1;
   /* background-image: url("./svg/home.svg");
   background-size: contain;
@@ -78,7 +79,6 @@ body {
   z-index: 1;
   overflow-y: auto; */
 }
-
 
 .butler-container {
   display: flex;
@@ -100,7 +100,6 @@ body {
   background-size: contain;
   background-repeat: no-repeat;
   transition: transform 1s ease;
-
 }
 .butler-1 {
   background-image: url("./svg/butler-1.svg");
@@ -110,14 +109,12 @@ body {
   background-image: url("./svg/butler-2.svg");
 }
 
-
-
 .background-result {
   background-image: url("./svg/resultpage.svg");
   background-size: contain;
   background-repeat: no-repeat;
   height: 105vh;
-  background-color: #A97754;
+  background-color: #a97754;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -127,7 +124,7 @@ body {
   z-index: 1;
 }
 
-.resulticon{
+.resulticon {
   background-image: url("./svg/resulticon.svg");
 }
 
@@ -135,7 +132,7 @@ body {
 .butler-2-result {
 
   width: 420px;
-  height: 571.5px; 
+  height: 571.5px;
   background-repeat: no-repeat;
 
 }
@@ -146,19 +143,18 @@ body {
 
 .butler-2-result {
   background-image: url("./svg/butler-2.svg");
-} 
+}
 
 .butler-container-result {
   display: flex;
   justify-content: center;
   width: 100%;
  temp
-  height: 2000px; 
+  height: 2000px;
   margin-top: 700px;
-  align-items: center; 
+  align-items: center;
   gap: 60%;
 } */
-
 
 /* .butler-resultpage {
   background-image: url("./svg/butler-resultpage.svg");
@@ -176,27 +172,26 @@ body {
 
 } */
 
-
-.resultpage{
+.resultpage {
   background-image: url("./svg/resultpage.svg");
 }
 
-.resulticon{
+.resulticon {
   background-image: url("./svg/resulticon.svg");
 }
 
 .background-chat {
   background-image: url("./svg/chat.svg");
-  background-size: contain;
+  background-size: cover;
   background-repeat: no-repeat;
-  height: 105vh;
+  height: 100vh;
   background-color: #fff5e1;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   background-position: center;
-  margin-top: -100px;
+  margin-top: -40px;
   z-index: 1;
 }
 
@@ -279,15 +274,17 @@ body {
 
 .question-background {
   background-image: url("./svg/question-background.svg");
-  background-size: contain;
+  background-size: cover;
   background-repeat: no-repeat;
   height: 105vh;
+  width: 100vw;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   background-position: center;
-  margin-top: -120px;
+  margin-top: -100px;
+  /* margin-top: -120px; */
   z-index: 1;
 }
 
@@ -378,7 +375,7 @@ body {
 
 #chat-content {
   /* width: 1000px; */
-  width: 70vw;
+  width: 65vw;
   /* height: 20vh; */
   min-height: 300px;
   min-width: 300px;
@@ -520,6 +517,7 @@ body {
   grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
   gap: 65px;
   padding: 10px;
+  /* color: #5b3015; */
 }
 
 .type-frame {
@@ -548,13 +546,13 @@ body {
   margin-top: 50px;
   transform: translateY(-20%);
   font-size: 20px;
-  color: black;
+  /* color: black; */
 }
 
 .type-frame-fullscreen {
   position: fixed;
   margin-top: -50px;
-  margin-left: -50px;
+  margin-left: 40px;
   z-index: 1000;
   padding-top: 0;
   animation: 1.5s slidein;
@@ -579,6 +577,7 @@ body {
 #type-modal {
   display: none;
   position: fixed;
+
   top: 0;
   left: 0;
   width: 100%;
@@ -599,13 +598,28 @@ body {
   }
 }
 
-.type-modal-content {
-  background-color: white;
+.type-modal-background {
+  background-image: url("./svg/roll.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
   padding: 20px;
   border-radius: 5px;
   width: 50vw;
   height: 90vh;
   position: relative;
+  display: flex;
+  align-items: start;
+  justify-content: center;
+}
+.type-modal-content {
+  width: 70%;
+  height: 70%;
+  padding: 20px;
+  margin-top: 70px;
+  margin-bottom: 70px;
+  position: relative;
+  overflow-y: scroll;
+  /* color: #5b3015; */
 }
 
 .type-close {
@@ -616,12 +630,14 @@ body {
   cursor: pointer;
 }
 #type-modal-name {
-  font-size: 30px;
-  font-weight: 600;
+  font-size: 32px;
+  font-weight: 700;
   margin-bottom: 20px;
 }
+
 #type-modal-description {
   margin-bottom: 20px;
+  font-size: 20px;
 }
 
 #overlay {
