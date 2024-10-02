@@ -1,10 +1,13 @@
 from flask import Flask, render_template, url_for, request, jsonify, session
 from llm import initialise_vectorstore, get_ai_response
+from handle_db import insert_type_test_result_db, insert_llm_queries
 
+import json
 import threading
 import os
 import secrets
 from dotenv import load_dotenv
+import time
 
 app = Flask(__name__)
 
@@ -38,6 +41,9 @@ def result():
     session["answers"] = data.get("answers")
     session["travel_type"] = data.get("travel_type")
     session["percentage"] = data.get("percentage")
+    answers_json = json.dumps(data.get("answers"))
+    percentage_json = json.dumps(data.get("percentage"))
+    insert_type_test_result_db(answers_json, percentage_json, data.get("travel_type"))
     return jsonify(redirect=url_for("result_page"))
 
 
@@ -89,7 +95,8 @@ def get_response():
     percentage = session.get(
         "percentage", [None, None, None, None, None, None, None, None, None, None]
     )
-
+    
+    start_time = time.time()
     ai_response = get_ai_response(
         user_input,
         retriever,
@@ -101,6 +108,12 @@ def get_response():
         travel_destinations,
         percentage,
     )
+    end_time = time.time()
+    execution_time = end_time - start_time
+
+    insert_llm_queries(execution_time, user_input, ai_response)
+
+
     return jsonify({"user_input": user_input, "ai_response": ai_response})
 
 
